@@ -18,7 +18,6 @@ const Map: React.FC = () => {
                 {tooltipContent}
             </div>
 
-            
             <ComposableMap
                 width={1050}
                 height={500}

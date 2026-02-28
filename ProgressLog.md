@@ -16,10 +16,10 @@ read the description, assing a volunteer that fits best
 
 4) Task Allocation
 - Andzhelina: Opportunities
-- Ege: Map + data
+- Ege: Map + data. Game loop/logic.
 - Tudor: Volunteers
 
 
-- Implemented map using
+- Implemented map and tooltip for map.
 
 
