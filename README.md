@@ -1,6 +1,10 @@
 # volunteer-dispatch-sim
 Coordinate volunteers globally and send them to the opportunities that fit them best. 
 
+## How to Setup
+* Pull latest changes
+* npm install to get dependencies
+
 ## How to Run
 TBD
 
