@@ -1,13 +1,15 @@
+import { useEffect, useState } from 'react';
 import './App.css'
 import Map from './components/Map'
 import Timer from './components/Timer';
-import { useEffect, useState } from 'react';
+import EndScreen from './components/EndScreen';
+
 
 function App() {
 
   // useState creates a piece of state
   // 5 min timer: 5x30
-  const[time, setTime] = useState(300);
+  const[time, setTime] = useState(10);
 
   
   useEffect(() =>{
@@ -16,9 +18,15 @@ function App() {
     // second argument: delay in milliseconds
     const interval = setInterval(() => {
 
-
-      // prev => prev + 1 means we use the latest state value.
-      setTime(prev => prev - 1);
+      setTime(prev => {
+        if(prev>0){
+          return prev-1; // stop timer when reaching 0
+        }
+        else{
+          clearInterval(interval); // stop timer when reaching 0
+          return 0;
+        }
+      });
     }, 1000); // 1000 milliseconds = 1 second
 
     // cleanup (when no longer displayed on the screen)
@@ -31,7 +39,7 @@ function App() {
     <>
     <div>
       <Timer time={time}/>
-      <br/>  <br/>
+      <br/><br/>
     </div>
 
     <div className="w-screen h-screen flex flex-col">
@@ -39,6 +47,9 @@ function App() {
         <Map />
       </div>
     </div>
+
+    {/* Check if time hit 0, (in the future check if no opportunities left as well) */}
+    {time === 0 && <EndScreen time={time} />}
     </>
   )
 }
