@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react';
 function App() {
 
   // useState creates a piece of state
-  // useState(0) initialises the state (time) with a value of 0
-  const[time, setTime] = useState(0);
+  // 5 min timer: 5x30
+  const[time, setTime] = useState(300);
 
   
   useEffect(() =>{
@@ -18,7 +18,7 @@ function App() {
 
 
       // prev => prev + 1 means we use the latest state value.
-      setTime(prev => prev + 1);
+      setTime(prev => prev - 1);
     }, 1000); // 1000 milliseconds = 1 second
 
     // cleanup (when no longer displayed on the screen)
@@ -31,8 +31,7 @@ function App() {
     <>
     <div>
       <Timer time={time}/>
-      <br/>
-      <br/>
+      <br/>  <br/>
     </div>
 
     <div className="w-screen h-screen flex flex-col">
