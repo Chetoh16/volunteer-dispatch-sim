@@ -1,0 +1,1 @@
+- Install svgr to import SVG as a React component instead of pasting it inlineWe
