@@ -1,17 +1,15 @@
-import { useState } from 'react'
 import './App.css'
 import Map from './components/Map'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div className="w-screen h-screen">
-        <Map/>
+    <div className="w-screen h-screen flex flex-col">
+      <h1 className="text-xl font-bold p-2">Hi</h1>
+      <div className="flex-1">
+        <Map />
       </div>
-    </>
+    </div>
   )
 }
 
-export default App
+export default App;
