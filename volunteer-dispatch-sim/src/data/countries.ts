@@ -8,5 +8,6 @@ export type CountryStatus = "idle" | "alert" | "active";
 // Define structure for a country 
 export interface CountryState{
     name: string;
+    iso: string;
     status: CountryStatus;
 }
