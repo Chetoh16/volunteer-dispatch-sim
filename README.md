@@ -3,7 +3,7 @@ Coordinate volunteers globally and send them to the opportunities that fit them 
 
 ## How to Setup
 * Pull latest changes
-* npm install to get dependencies
+* `npm install to get dependencies`
 
 ## How to Run
 TBD
