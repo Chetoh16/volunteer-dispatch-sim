@@ -3,15 +3,24 @@ import './App.css'
 import Map from './components/Map'
 import Timer from './components/Timer';
 import EndScreen from './components/EndScreen';
+import type { CountryState } from './data/countries';
 
+
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
 
 function App() {
 
+  
   // useState creates a piece of state
   // 5 min timer: 5x30
-  const[time, setTime] = useState(10);
+  const[time, setTime] = useState(300);
 
-  
+  // Owned/Used by App so it can be passed down to Map
+  const [countries, setCountries] = useState<CountryState[]>([]);
+
+
+  // --------- Timer ---------
+
   useEffect(() =>{
     // setInterval runs a function repeatedly.
     // first argument: function to run
@@ -34,6 +43,50 @@ function App() {
   },[]); // empty dependency array = run once
  
 
+   // ---------  Initialise countries ---------
+
+  useEffect(() => {
+        if (countries.length > 0) return; // already initialised
+
+        fetch(geoUrl)
+            .then(res => res.json())
+            .then(worldData => {
+            const geographies = worldData.objects.countries.geometries;
+            const initialCountries: CountryState[] = geographies.map((geo: any) => ({
+                name: geo.properties.name,
+                iso: geo.id,
+                status: "idle",
+            }));
+            setCountries(initialCountries);
+            });
+    }, [countries, setCountries]);
+
+  // ---------  Random Opportunity Generator ---------
+
+  useEffect(() => {
+    if (countries.length === 0) return; // wait until countries are initialised
+
+    const alertInterval = setInterval(() => {
+      setCountries(prev => {
+        const idleCountries = prev.filter(c => c.status === "idle");
+        if (idleCountries.length === 0) return prev;
+
+        // Pick random idle country
+        const randomIndex = Math.floor(Math.random() * idleCountries.length);
+        const chosen = idleCountries[randomIndex];
+
+        // Return new countries array with that country set to 'alert'
+        return prev.map(c =>
+          c.iso === chosen.iso ? { ...c, status: "alert" } : c
+        );
+      });
+    }, Math.random() * 15000 + 15000); // random between 15s-30s
+
+    return () => clearInterval(alertInterval);
+
+  }, [countries]);
+
+  // ---------  Render ---------
 
   return (
     <>
@@ -44,7 +97,7 @@ function App() {
 
     <div className="w-screen h-screen flex flex-col">
       <div className="flex-1">
-        <Map />
+        <Map countries={countries} setCountries={setCountries} />
       </div>
     </div>
 

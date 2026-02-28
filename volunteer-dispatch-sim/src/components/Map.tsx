@@ -1,21 +1,25 @@
 import React from "react";
 import { useState } from "react";
 import type { CountryState } from "../data/countries";
+import { useEffect } from "react";
 
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-} from "react-simple-maps";
+import { ComposableMap, Geographies, Geography} from "react-simple-maps";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
 
+interface MapProps {
+    countries: CountryState[];
 
+    
+    // setCountries is a function that updates the countries state
+    // can call it either with a new array of countries or a function that transforms the previous array into a new array
+    setCountries: React.Dispatch<React.SetStateAction<CountryState[]>>;
+}
 
-const Map: React.FC = () => {
+const Map: React.FC<MapProps> = ({ countries, setCountries }) => {
     const [tooltipContent, setTooltipContent] = useState<string>("");
-    const [countries, setCountries] = useState<CountryState[]>([]);
 
+    // Render
     return (
     <div className="relative w-full h-full">
         {tooltipContent && (
@@ -24,54 +28,36 @@ const Map: React.FC = () => {
         </div>
         )}
 
-        <ComposableMap
-        width={1050}
-        height={500}
-        style={{ width: "100%", height: "auto" }}
-        >
+      <ComposableMap width={1050} height={500} style={{ width: "100%", height: "auto" }}>
         <Geographies geography={geoUrl}>
-            {({ geographies }) => {
-            
-            // Initialise country state once
-            if (countries.length === 0 && geographies.length > 0) {
-                const initialCountries: CountryState[] = geographies.map(
-                (geo) => ({
-                    name: geo.properties.name,
-                    iso: geo.id,
-                    status: "idle",
-                })
-                );
+          {({ geographies }) => 
+            geographies.map((geo) => {
+              const country = countries.find(c => c.iso === geo.id);
+              const name = geo.properties.name;
 
-                setCountries(initialCountries);
-            }
+              let fillColor = "#ccc";
+              if(country?.status === "alert") fillColor = "red";
+              if(country?.status === "active") fillColor = "green";
 
-            return geographies.map((geo) => {
-                const name = geo.properties.name;
-                const country = countries.find(c => c.iso === geo.id);
-
-                let fillColor = "#ccc"; // country fill colour
-                if (country?.status === "alert") fillColor = "red";       // red indicates there's an opportunity chance
-                if (country?.status === "active") fillColor = "green";    // green indicates there's an opportunity taking place
-
-                return (
+              return (
                 <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    fill={fillColor} // country fill colour
-                    stroke="#000" // country border colour
-                    style={{
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill={fillColor}
+                  stroke="#000"
+                  style={{
                     default: { outline: "none" },
-                    hover: { fill: "#555", outline: "none" }, 
+                    hover: { fill: "#555", outline: "none" },
                     pressed: { outline: "none" },
-                    }}
-                    onMouseEnter={() => setTooltipContent(name)}
-                    onMouseLeave={() => setTooltipContent("")}
+                  }}
+                  onMouseEnter={() => setTooltipContent(name)}
+                  onMouseLeave={() => setTooltipContent("")}
                 />
-                );
-            });
-            }}
+              )
+            })
+          }
         </Geographies>
-        </ComposableMap>
+      </ComposableMap>
     </div>
     );
 };

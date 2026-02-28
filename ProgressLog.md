@@ -21,5 +21,5 @@ read the description, assing a volunteer that fits best
 
 
 - Implemented map and tooltip for map.
-
+- Taking map init from map.tsx to app as app will handle gamelogic and loop and alerts
 
