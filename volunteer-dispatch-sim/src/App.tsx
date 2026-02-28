@@ -4,6 +4,7 @@ import Map from './components/Map'
 import Timer from './components/Timer';
 import EndScreen from './components/EndScreen';
 import type { CountryState } from './data/countries';
+import StartScreen from './components/StartScreen';
 
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
@@ -11,17 +12,22 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 function App() {
 
   
-  // useState creates a piece of state
   // 5 min timer: 5x30
   const[time, setTime] = useState(300);
 
-  // Owned/Used by App so it can be passed down to Map
   const [countries, setCountries] = useState<CountryState[]>([]);
+
+  const [gameStarted, setGameStarted] = useState(false);
+
+
 
 
   // --------- Timer ---------
 
   useEffect(() =>{
+    if (!gameStarted) return; // only activate timer when game has started
+
+
     // setInterval runs a function repeatedly.
     // first argument: function to run
     // second argument: delay in milliseconds
@@ -40,7 +46,7 @@ function App() {
 
     // cleanup (when no longer displayed on the screen)
     return () => clearInterval(interval);
-  },[]); // empty dependency array = run once
+  },[gameStarted]); // empty dependency array = run once, [gameStarted] run whenever gameStarted changes
  
 
    // ---------  Initialise countries ---------
@@ -101,7 +107,11 @@ function App() {
       </div>
     </div>
 
+    {/* Render Start Screen */}
+    {!gameStarted && <StartScreen onStart={() => setGameStarted(true)} />}
+
     {/* Check if time hit 0, (in the future check if no opportunities left as well) */}
+    {/* Render End Screen */}
     {time === 0 && <EndScreen time={time} />}
     </>
   )
