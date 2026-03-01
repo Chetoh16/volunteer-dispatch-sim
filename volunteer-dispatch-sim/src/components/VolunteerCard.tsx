@@ -1,9 +1,14 @@
 // VolunteerCard.tsx
 
-import React from "react";
-import type { Volunteer, VolunteerStatus } from "../data/volunteers";
-import { COURSE_ACRONYMS, VOLUNTEER_STATUS_LABEL } from "../data/volunteers";
-
+import { useMemo, useState } from "react";
+import {
+    COURSE_ACRONYMS,
+    VOLUNTEER_STATUS_LABEL,
+    makeVolunteerList,
+    scoreForExchange,
+    type Volunteer,
+    type VolunteerStatus,
+} from "../data/volunteers";
 type VolunteerCardProps = {
     volunteer: Volunteer;
 

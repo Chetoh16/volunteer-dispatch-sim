@@ -57,7 +57,7 @@ export type Volunteer = {
     id: string;
     name: string;
     age: number; // 18..30
-    headline?: string; // Course + interest/role
+    headline?: string;
 
     status: VolunteerStatus;
     remoteOk?: boolean;
@@ -68,7 +68,11 @@ export type Volunteer = {
     languages?: string[];
     tags?: string[];
 
-    photoUrl?: string; // png path/url for card photo
+    // Scoring
+    exchanges_completed: number;
+    score: number;
+
+    photoUrl?: string;
 
     fit?: {
         score: number; // 0..100
@@ -109,6 +113,7 @@ export const VOLUNTEER_POOL = {
         // Indian (4)
         "Arjun", "Priya", "Rohan", "Ananya",
     ],
+
     lastNames: [
         "Smith", "Johnson", "Brown", "Taylor", "Wilson",
         "Thompson", "White", "Harris", "Martin", "Clark",
@@ -138,37 +143,7 @@ export const VOLUNTEER_POOL = {
         // Indian
         "Patel", "Sharma", "Singh", "Reddy",
     ],
-    headlines: [
-        "CS student • Youth leadership",
-        "Arts student • Community outreach",
-        "Business student • Event coordination",
-        "Engineering student • Sustainability",
-        "Medical student • Public health volunteering",
 
-        "Psychology student • Mental health advocacy",
-        "Law student • Human rights awareness",
-        "International Relations student • Cultural exchange",
-        "Education student • Literacy support",
-        "Environmental Science student • Climate action",
-
-        "Economics student • Social impact research",
-        "Nursing student • Community care",
-        "Marketing student • Campaign coordination",
-        "Architecture student • Urban regeneration",
-        "Biology student • Conservation projects",
-
-        "History student • Heritage preservation",
-        "Sociology student • Inclusion initiatives",
-        "Mathematics student • STEM tutoring",
-        "Physics student • Science outreach",
-        "Politics student • Civic engagement",
-
-        "Media student • Digital storytelling",
-        "Philosophy student • Ethics workshops",
-        "Sports Science student • Youth coaching",
-        "Geography student • Development studies",
-        "Design student • Creative workshops",
-    ],
     courses: Object.keys(COURSE_ACRONYMS) as Course[],
     languages: ["English", "Spanish", "French", "German", "Italian"],
     tags: [
@@ -179,6 +154,7 @@ export const VOLUNTEER_POOL = {
         "Event Stewarding",
         "Fundraising",
     ],
+
     statuses: [
         "available",
         "out_volunteering",
@@ -186,6 +162,34 @@ export const VOLUNTEER_POOL = {
         "unavailable",
         "at_uni_work",
     ] as const,
+};
+
+export const COURSE_INTERESTS: Record<Course, string[]> = {
+    "Computer Science": ["Software volunteering", "Web development", "Data support", "Tech mentoring"],
+    "Arts": ["Community outreach", "Creative workshops", "Youth engagement", "Fundraising design"],
+    "Business Management": ["Event coordination", "Partnerships", "Operations support", "Team leadership"],
+    "Mechanical Engineering": ["Sustainability", "Prototyping help", "STEM outreach", "Logistics support"],
+    "Medicine": ["Public health volunteering", "Health education", "Community care support", "Wellbeing outreach"],
+    "Psychology": ["Mental health advocacy", "Peer support", "Wellbeing workshops", "Listening support"],
+    "Law": ["Human rights awareness", "Legal clinic support", "Policy research", "Civic education"],
+    "International Relations": ["Cultural exchange", "NGO support", "Community liaison", "Project coordination"],
+    "Education": ["Literacy support", "Tutoring", "Youth coaching", "Classroom support"],
+    "Environmental Science": ["Climate action", "Recycling campaigns", "Community clean-ups", "Sustainability outreach"],
+    "Economics": ["Social impact research", "Data collection", "Grant support", "Community surveys"],
+    "Nursing": ["Community care", "Patient support", "Health outreach", "Wellbeing assistance"],
+    "Marketing": ["Campaign coordination", "Social media", "Content planning", "Outreach promotion"],
+    "Architecture": ["Urban regeneration", "Community planning", "Design support", "Accessibility projects"],
+    "Biology": ["Conservation projects", "Biodiversity surveys", "Education outreach", "Lab support"],
+    "History": ["Heritage preservation", "Museum support", "Archive organisation", "Guided tours support"],
+    "Sociology": ["Inclusion initiatives", "Community research", "Youth programmes", "Social outreach"],
+    "Mathematics": ["STEM tutoring", "Data support", "Workshop facilitation", "Problem-solving mentoring"],
+    "Physics": ["Science outreach", "STEM demos", "Tech support", "Workshop assistance"],
+    "Politics": ["Civic engagement", "Community organising", "Policy outreach", "Campaign volunteering"],
+    "Media Studies": ["Digital storytelling", "Video editing", "Content creation", "Campaign media"],
+    "Philosophy": ["Ethics workshops", "Debate facilitation", "Mentoring", "Community dialogue"],
+    "Sports Science": ["Youth coaching", "Sports sessions", "Wellbeing activities", "Team facilitation"],
+    "Geography": ["Development studies", "Mapping support", "Fieldwork help", "Community projects"],
+    "Design": ["Creative workshops", "UI support", "Poster design", "Campaign materials"],
 };
 
 function pickOne<T>(arr: readonly T[], rnd: () => number): T {
@@ -210,6 +214,11 @@ function clamp(n: number, min: number, max: number) {
     return Math.max(min, Math.min(max, n));
 }
 
+function makeHeadline(course: Course, rnd: () => number): string {
+    const interest = pickOne(COURSE_INTERESTS[course], rnd);
+    return `${course} student • ${interest}`;
+}
+
 export function mulberry32(seed: number) {
     return function () {
         let t = (seed += 0x6d2b79f5);
@@ -217,6 +226,11 @@ export function mulberry32(seed: number) {
         t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
         return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
+}
+
+// Scoring rule (single source of truth)
+export function scoreForExchange(v: Volunteer): number {
+    return 10 + v.level_of_experience;
 }
 
 export const FIXED_VOLUNTEER: Volunteer = {
@@ -230,7 +244,9 @@ export const FIXED_VOLUNTEER: Volunteer = {
     course: "Computer Science",
     languages: ["English"],
     tags: [],
-    photoUrl: "", // set to a png path when you have it
+    exchanges_completed: 0,
+    score: 0,
+    photoUrl: "",
 };
 
 export function makeRandomVolunteer(
@@ -254,7 +270,7 @@ export function makeRandomVolunteer(
     const level_of_experience = clamp(Math.round(rnd() * 10), 0, 10);
 
     const course = pickOne(VOLUNTEER_POOL.courses, rnd);
-    const headline = pickOne(VOLUNTEER_POOL.headlines, rnd);
+    const headline = makeHeadline(course, rnd);
 
     const remoteOk = rnd() > 0.35;
 
@@ -281,6 +297,8 @@ export function makeRandomVolunteer(
         course,
         languages,
         tags,
+        exchanges_completed: 0,
+        score: 0,
         photoUrl: "",
     };
 }
