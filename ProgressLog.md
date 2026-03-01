@@ -25,3 +25,9 @@ read the description, assing a volunteer that fits best
 - App generates random opportunities every 15-30 seconds.
 
 - Change Dashboard to Volunteer Dashboard
+
+
+TO DO
+- levels correspond to difficulty -> base point bonus
+- Punish sending high level volunteers to low difficulty opportunities
+- sfx & looping music

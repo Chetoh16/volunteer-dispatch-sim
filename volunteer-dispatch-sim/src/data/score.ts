@@ -2,7 +2,7 @@
 export interface ScoreBreakdown{
     base: number;           // base points of opportunity based on difficulty
     interestBonus: number;  // bonus points if volunteer's interest matches type of opportunity
-    languageBonus: number;   // bonus points if volunteer's languages matches requirements of opportunity
+    languageBonus: number;  // bonus points if volunteer's languages matches requirements of opportunity
     speedBonus: number;     // bonus points if opportunity clicked and assigned within 3-5 seconds
     total: number;          // total points i.e. score
 }

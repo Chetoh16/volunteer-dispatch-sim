@@ -1,5 +1,6 @@
 export interface Opportunity  {
     id : number,
+    countryIso: string; // link map to country
     name : string,
     location : string,
     description : string,
@@ -19,6 +20,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 1,
         name: "Green Leaders - Environmental Education",
+        countryIso: "IDN", 
         location: "Bali, Indonesia",
         description: "Educate local communities about climate change through workshops and activities. Help create sustainable practices and environmental awareness programs.",
         sdg: "13 - Climate Action",
@@ -34,6 +36,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 2,
         name: "Equify - Social Inclusion",
+        countryIso: "ITA",
         location: "Rome, Italy",
         description: "Run workshops on human rights and diversity in local schools. Support initiatives that promote equality and fight discrimination.",
         sdg: "10 - Reduced Inequalities",
@@ -49,6 +52,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 3,
         name: "Global Classroom",
+        countryIso: "MEX", 
         location: "Mexico City, Mexico",
         description: "Teach English and basic literacy to children using creative methods. Help improve educational outcomes in underserved communities.",
         sdg: "4 - Quality Education",
@@ -64,6 +68,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 4,
         name: "Sustainable Tourism Development",
+        countryIso: "PER", 
         location: "Cusco, Peru",
         description: "Help local communities develop eco-tourism initiatives. Support cultural preservation and sustainable economic growth.",
         sdg: "8 - Decent Work & Economic Growth",
@@ -79,6 +84,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 5,
         name: "Marine Conservation",
+        countryIso: "THA",
         location: "Phuket, Thailand",
         description: "Protect marine ecosystems through education and hands-on activities. Organize beach cleanups and awareness campaigns.",
         sdg: "14 - Life Below Water",
@@ -94,6 +100,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 6,
         name: "Youth Empowerment",
+        countryIso: "TUR",
         location: "Istanbul, Turkey",
         description: "Facilitate workshops on leadership and global citizenship for local youth. Help young people develop skills for their future.",
         sdg: "4 - Quality Education",
@@ -109,6 +116,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 7,
         name: "Wildlife Protection",
+        countryIso: "CRI", 
         location: "San José, Costa Rica",
         description: "Work on conservation projects to protect local wildlife and their habitats. Participate in research and education activities.",
         sdg: "15 - Life on Land",
@@ -124,6 +132,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 8,
         name: "Health Awareness",
+        countryIso: "GHA",
         location: "Accra, Ghana",
         description: "Run health education campaigns about nutrition, hygiene, and disease prevention. Work with local clinics and schools.",
         sdg: "3 - Good Health & Well-being",
@@ -139,6 +148,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 9,
         name: "Women Empowerment",
+        countryIso: "IND", 
         location: "New Delhi, India",
         description: "Support programs that help women gain skills and confidence. Facilitate workshops on entrepreneurship and leadership.",
         sdg: "5 - Gender Equality",
@@ -154,6 +164,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 10,
         name: "Clean Water Initiative",
+        countryIso: "KEN",
         location: "Nairobi, Kenya",
         description: "Help provide clean water access to communities. Educate about water conservation and sanitation practices.",
         sdg: "6 - Clean Water & Sanitation",
@@ -169,6 +180,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 11,
         name: "Teach Digital Skills",
+        countryIso: "PER", 
         location: "Lima, Peru",
         description: "Teach basic computer skills and digital literacy to underserved youth. Help bridge the digital divide and prepare students for modern job markets.",
         sdg: "4 - Quality Education",
@@ -184,6 +196,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 12,
         name: "Refugee Support",
+        countryIso: "GRC", 
         location: "Athens, Greece",
         description: "Work with refugee communities to provide educational and integration support. Help with language classes, children's activities, and community building.",
         sdg: "10 - Reduced Inequalities",
@@ -199,6 +212,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 13,
         name: "Urban Gardening",
+        countryIso: "ZAF", 
         location: "Cape Town, South Africa",
         description: "Create and maintain community gardens in urban areas. Teach sustainable farming practices and help communities grow their own food.",
         sdg: "2 - Zero Hunger",
@@ -214,6 +228,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 14,
         name: "Renewable Energy Education",
+        countryIso: "KEN", 
         location: "Nairobi, Kenya",
         description: "Educate communities about solar energy and other renewable sources. Help install small-scale solar solutions for schools and community centers.",
         sdg: "7 - Affordable & Clean Energy",
@@ -229,6 +244,7 @@ export const opportunities: Opportunity[] = [
     {
         id: 15,
         name: "Elderly Care & Companionship",
+        countryIso: "JPN",
         location: "Kyoto, Japan",
         description: "Provide companionship and support to elderly residents. Organize activities, help with daily tasks, and learn about Japanese culture and traditions.",
         sdg: "3 - Good Health & Well-being",

@@ -6,6 +6,7 @@ import EndScreen from './components/EndScreen';
 import type { CountryState } from './data/countries';
 import StartScreen from './components/StartScreen';
 import { calculateScore } from './data/score';
+import type { Opportunity } from './data/opportunities';
 
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
@@ -17,6 +18,8 @@ function App() {
   const[time, setTime] = useState(300);
 
   const [countries, setCountries] = useState<CountryState[]>([]);
+
+  const [activeOpportunity, setActiveOpportunity] = useState<Opportunity | null>(null);
 
   const [gameStarted, setGameStarted] = useState(false);
 
@@ -103,7 +106,6 @@ function App() {
 
   // ---------  Render ---------
 
-function App() {
   return (
     <>
     <div>
