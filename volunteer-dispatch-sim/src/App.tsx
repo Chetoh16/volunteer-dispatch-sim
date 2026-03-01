@@ -172,7 +172,18 @@ function App() {
 
     {activeOpportunity && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <OpportunityCard {...activeOpportunity} onClose={() => setActiveOpportunity(null)}/> 
+        <OpportunityCard
+          {...activeOpportunity}
+          onClose={() => {
+            setIsSelectingVolunteer(false);
+            setSelectedVolunteerId(null);
+            setActiveOpportunity(null);
+          }}
+          onStartSelecting={() => setIsSelectingVolunteer(true)}
+          assignedVolunteerName={
+            assignments.find(a => a.opportunityId === activeOpportunity.id)?.volunteerName
+          }
+        />
         
       </div>
     )}

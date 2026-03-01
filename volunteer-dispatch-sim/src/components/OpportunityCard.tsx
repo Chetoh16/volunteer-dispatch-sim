@@ -19,6 +19,9 @@ interface OpportunityCardInfo {
 
     // to close the card
     onClose: () => void;
+    
+    onStartSelecting: () => void;
+    assignedVolunteerName?: string;
 }
 
 const OpportunityCard: React.FC<OpportunityCardInfo> = ({ 
@@ -31,7 +34,9 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
     type,
     requirements,
     image,
-    onClose
+    onClose,
+    onStartSelecting,
+    assignedVolunteerName
 }) => {
     const handleSelectVolunteerButton = () => {
         alert(`You selected: ${name} in ${location}`);
@@ -96,11 +101,21 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
                     </ul>
                 </div>
                 
-                <button 
+                {/* 
+                    Either show "Select Volunteer" or "Assigned to"
+                */}
+                {assignedVolunteerName ? (
+                <button className="select-volunteer-button disabled">
+                    Assigned to {assignedVolunteerName}
+                </button>
+                ) : (
+                <button
                     className="select-volunteer-button"
-                    onClick={handleSelectVolunteerButton}>
+                    onClick={onStartSelecting}
+                >
                     Select Volunteer
                 </button>
+                )}
 
                 
             </div>
