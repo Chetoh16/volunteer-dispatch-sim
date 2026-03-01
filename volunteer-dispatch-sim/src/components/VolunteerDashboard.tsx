@@ -122,8 +122,18 @@ export default function VolunteerDashboard({
 
     // Reset volunteers whenever resetKey changes
     useEffect(() => {
-        setVolunteers(allVolunteers.slice(0, 5));
-    }, [allVolunteers]);
+    setVolunteers(prev => {
+        // Keep existing volunteers
+        const updatedVolunteers = allVolunteers.slice(0, 5).map(v => {
+        // If volunteer was assigned and returning, increment experience
+        const wasAssigned = !prev.find(pv => pv.id === v.id);
+        return wasAssigned
+            ? { ...v, level_of_experience: Math.min(10, v.level_of_experience + 1) }
+            : v;
+        });
+        return updatedVolunteers;
+    });
+    }, [allVolunteers, resetKey]);
 
     // Which volunteer profile is currently open in the modal, by ID.
     const [profileId, setProfileId] = useState<number | null>(null);
@@ -199,6 +209,8 @@ export default function VolunteerDashboard({
         setVolunteers(prev => prev.filter(v => v.id !== id));
 
         onAssignVolunteer(id, volunteer.name);
+
+        // Experience increment will happen when volunteer comes back via resetKey
     }
 
     // Derived values (computed from state each render).
