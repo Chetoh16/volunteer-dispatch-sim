@@ -14,9 +14,11 @@ interface MapProps {
     // setCountries is a function that updates the countries state
     // Can call it either with a new array of countries or a function that transforms the previous array into a new array
     setCountries: React.Dispatch<React.SetStateAction<CountryState[]>>;
+
+    onCountryClick: (iso: string) => void;
 }
 
-const Map: React.FC<MapProps> = ({ countries, setCountries }) => {
+const Map: React.FC<MapProps> = ({ countries, setCountries, onCountryClick }) => {
     const [tooltipContent, setTooltipContent] = useState<string>("");
 
     // Render
@@ -28,12 +30,13 @@ const Map: React.FC<MapProps> = ({ countries, setCountries }) => {
         </div>
         )}
 
-      <ComposableMap width={1050} height={500} style={{ width: "100%", height: "auto" }}>
+      <ComposableMap width={1200} height={500} style={{ width: "100%", height: "auto" }}>
         <Geographies geography={geoUrl}>
           {({ geographies }) => 
             geographies.map((geo) => {
               const country = countries.find(c => c.iso === geo.id);
               const name = geo.properties.name;
+              
 
               let fillColor = "#ccc";
               if(country?.status === "alert") fillColor = "red";
@@ -52,6 +55,12 @@ const Map: React.FC<MapProps> = ({ countries, setCountries }) => {
                   }}
                   onMouseEnter={() => setTooltipContent(name)}
                   onMouseLeave={() => setTooltipContent("")}
+                  onClick={() => {
+                    const country = countries.find(c => c.iso === geo.id);
+                    if(country?.status === "alert" || country?.status === "active"){
+                      onCountryClick(geo.id);
+                    }
+                  }}
                 />
               )
             })

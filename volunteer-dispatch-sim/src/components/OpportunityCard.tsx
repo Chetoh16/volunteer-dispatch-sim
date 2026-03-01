@@ -12,10 +12,16 @@ interface OpportunityCardInfo {
     type: string;
     requirements: {
         age: string;
-        language: string;
+        language: string[];
         other?: string[];
     };
     image: string;
+
+    // to close the card
+    onClose: () => void;
+    
+    onStartSelecting: () => void;
+    assignedVolunteerName?: string;
 }
 
 const OpportunityCard: React.FC<OpportunityCardInfo> = ({ 
@@ -27,12 +33,12 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
     difficulty,
     type,
     requirements,
-    image
+    image,
+    onClose,
+    onStartSelecting,
+    assignedVolunteerName
 }) => {
-    const handleSelectVolunteerButton = () => {
-        alert(`You selected: ${name} in ${location}`);
-        console.log(`Selected: ${name} (ID: ${id})`);
-    };
+
 
     const getDifficultyColor = (level: 1 | 2 | 3) => {
         switch(level) {
@@ -45,6 +51,17 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
 
     return (
         <div className="opportunity-card">
+
+            <div className="relative">
+
+            <button
+                onClick={onClose}
+                className="close-button"
+            >
+                ✕
+            </button>
+            </div>
+
             <div className="card-image-container">
                 <img src={image} alt={name} className="card-image" />
             </div>
@@ -74,18 +91,30 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
                     <span className="requirements-label">Requirements:</span>
                     <ul className="requirements-list">
                         <li><strong>Age:</strong> {requirements.age}</li>
-                        <li><strong>Language:</strong> {requirements.language}</li>
+                        <li><strong>Language:</strong> {requirements.language.join(", ")}</li>
                         {requirements.other && requirements.other.map((item, index) => (
                             <li key={index}>{item}</li>
                         ))}
                     </ul>
                 </div>
                 
-                <button 
+                {/* 
+                    Either show "Select Volunteer" or "Assigned to"
+                */}
+                {assignedVolunteerName ? (
+                <button className="select-volunteer-button disabled">
+                    Assigned to <br/>{assignedVolunteerName}
+                </button>
+                ) : (
+                <button
                     className="select-volunteer-button"
-                    onClick={handleSelectVolunteerButton}>
+                    onClick={onStartSelecting}
+                >
                     Select Volunteer
                 </button>
+                )}
+
+                
             </div>
         </div>
     );
