@@ -70,6 +70,8 @@ function App() {
   // ---------  Random Opportunity Generator ---------
 
   useEffect(() => {
+    if (!gameStarted) return; // only activate timer when game has started
+
     if (countries.length === 0) return; // wait until countries are initialised
 
     const alertInterval = setInterval(() => {
@@ -90,7 +92,7 @@ function App() {
 
     return () => clearInterval(alertInterval);
 
-  }, [countries]);
+  }, [countries, gameStarted]);
 
   // ---------  Render ---------
 
