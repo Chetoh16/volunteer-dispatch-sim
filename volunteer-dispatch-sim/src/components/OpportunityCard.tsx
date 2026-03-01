@@ -38,10 +38,7 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
     onStartSelecting,
     assignedVolunteerName
 }) => {
-    const handleSelectVolunteerButton = () => {
-        alert(`You selected: ${name} in ${location}`);
-        console.log(`Selected: ${name} (ID: ${id})`);
-    };
+
 
     const getDifficultyColor = (level: 1 | 2 | 3) => {
         switch(level) {
@@ -106,7 +103,7 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
                 */}
                 {assignedVolunteerName ? (
                 <button className="select-volunteer-button disabled">
-                    Assigned to {assignedVolunteerName}
+                    Assigned to <br/>{assignedVolunteerName}
                 </button>
                 ) : (
                 <button

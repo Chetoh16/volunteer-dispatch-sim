@@ -146,7 +146,7 @@ export default function VolunteerDashboard({
     isSelecting: boolean;
     selectedVolunteerId: number | null;
     onSelectVolunteer: (id: number) => void;
-    onAssignVolunteer: (id: number) => void;
+    onAssignVolunteer: (id: number, name:string) => void;
 }) {
     // Generates a pool of 7 volunteers ONCE for the session.
     // In practice: you have 7 “possible” volunteers, but you start showing only 5.
@@ -231,11 +231,13 @@ export default function VolunteerDashboard({
     }
 
     function handleAssign(id: number) {
-        // Remove volunteer from local dashboard state
-        setVolunteers((prev) => prev.filter((v) => v.id !== id));
+        const volunteer = volunteers.find(v => v.id === id);
+        if (!volunteer) return;
 
-        // Inform parent (App.tsx)
-        onAssignVolunteer(id);
+        // Remove volunteer from local dashboard state
+        setVolunteers(prev => prev.filter(v => v.id !== id));
+
+        onAssignVolunteer(id, volunteer.name);
     }
 
     // Derived values (computed from state each render).

@@ -39,7 +39,7 @@ function App() {
   const [score, setScore] = useState(0);
 
 
-  const handleAssignVolunteer = (volunteerId: number) => {
+  const handleAssignVolunteer = (volunteerId: number, volunteerName: string) => {
     if (!activeOpportunity) return;
 
     setAssignments(prev => [
@@ -47,7 +47,7 @@ function App() {
       {
         opportunityId: activeOpportunity.id,
         volunteerId,
-        volunteerName: `Volunteer #${volunteerId}`, // temp until we pass real name
+        volunteerName: `Volunteer #${volunteerName}`, // temp until we pass real name
       }
     ]);
 
@@ -211,7 +211,7 @@ function App() {
           isSelecting={isSelectingVolunteer}
           selectedVolunteerId={selectedVolunteerId}
           onSelectVolunteer={(id) => setSelectedVolunteerId(id)}
-          onAssignVolunteer={(id) => handleAssignVolunteer(id)}
+          onAssignVolunteer={handleAssignVolunteer}
         />
       </div>
 
