@@ -208,6 +208,7 @@ function App() {
       {/* Dashboard */}
       <div className="h-[200px] border-t border-black/40 relative z-[100]">
         <VolunteerDashboard
+          time={time}
           isSelecting={isSelectingVolunteer}
           selectedVolunteerId={selectedVolunteerId}
           onSelectVolunteer={(id) => setSelectedVolunteerId(id)}

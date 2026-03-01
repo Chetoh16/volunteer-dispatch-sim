@@ -125,24 +125,16 @@ function ProfileModal({ volunteer, onClose, onThumbsUp, onCompleteExchange }: Pr
     );
 }
 
-// Formats elapsed seconds into MM:SS.
-// In practice: shows the game timer at the top (e.g. 02:13).
-function formatMMSS(totalSeconds: number) {
-    const m = Math.floor(totalSeconds / 60);
-    const s = totalSeconds % 60;
-    const mm = String(m).padStart(2, "0");
-    const ss = String(s).padStart(2, "0");
-    return `${mm}:${ss}`;
-}
-
 // Main screen component.
 // In practice: holds the game state (volunteers list, timer, modal open/close) and renders the UI.
 export default function VolunteerDashboard({
+    time,
     isSelecting,
     selectedVolunteerId,
     onSelectVolunteer,
     onAssignVolunteer
 }: {
+    time: number;
     isSelecting: boolean;
     selectedVolunteerId: number | null;
     onSelectVolunteer: (id: number) => void;
@@ -158,40 +150,31 @@ export default function VolunteerDashboard({
     // Which volunteer profile is currently open in the modal, by ID.
     const [profileId, setProfileId] = useState<number | null>(null);
 
-    // Game timer in seconds since the dashboard mounted.
-    const [elapsedSec, setElapsedSec] = useState(0);
-
     // “Gate” flags so each unlock happens only once.
     // useRef stores a mutable value that does not trigger re-renders.
     const unlocked2m = useRef(false);
     const unlocked4m = useRef(false);
 
-    // Timer tick: increments elapsedSec every second.
-    // In practice: drives the on-screen timer AND the timed unlocking logic.
-    useEffect(() => {
-        const id = window.setInterval(() => {
-            setElapsedSec((t) => t + 1);
-        }, 1000);
-
-        // Cleanup: stops the interval if component unmounts.
-        return () => window.clearInterval(id);
-    }, []);
 
     // Unlock logic:
     // - at 120s (2 minutes), add volunteer #6
     // - at 240s (4 minutes), add volunteer #7
     // In practice: the roster grows over time to increase difficulty/choice.
     useEffect(() => {
-        if (!unlocked2m.current && elapsedSec >= 120) {
+        if (!unlocked2m.current && time <= 180) {
             unlocked2m.current = true;
-            setVolunteers((prev) => (prev.length >= 6 ? prev : [...prev, allVolunteers[5]]));
+            setVolunteers(prev =>
+                prev.length >= 6 ? prev : [...prev, allVolunteers[5]]
+            );
         }
 
-        if (!unlocked4m.current && elapsedSec >= 240) {
+        if (!unlocked4m.current && time <= 60) {
             unlocked4m.current = true;
-            setVolunteers((prev) => (prev.length >= 7 ? prev : [...prev, allVolunteers[6]]));
+            setVolunteers(prev =>
+                prev.length >= 7 ? prev : [...prev, allVolunteers[6]]
+            );
         }
-    }, [elapsedSec, allVolunteers]);
+    }, [time, allVolunteers]);
 
     // Handles clicking 👍 on a card. (for testing)
     // In practice: increases experience for that volunteer in state (clamped to 10).
@@ -250,24 +233,9 @@ export default function VolunteerDashboard({
         : null;
 
     return (
-        <div className="min-h-screen bg-[#0b1012] text-gray-100">
-            {/* Top HUD area. In practice: displays score, timer, and unlock progress. */}
-            <div className="flex items-center justify-between gap-3 px-4 py-3">
-                <div>
-                    <div className="text-lg font-semibold">Volunteer Dashboard</div>
-                    {/*
-                        <div className="text-sm text-gray-300">
-                            Total score: {totalScore} • Time: {formatMMSS(elapsedSec)}
-                        </div>
-                    */}
+        <div className="fixed bottom-0 left-0 right-0 z-[120] border-t border-black/40 bg-[#0f1518]/95 backdrop-blur-">
 
-                    <div className="text-xs text-gray-500">
-                        Unlocks: +1 at 02:00, +1 at 04:00 • Active: {volunteers.length}/7
-                    </div>
-                </div>
 
-                {/* Placeholder for later: pause/reset */}
-            </div>
 
             {/* Bottom strip pinned to screen bottom.
                 In practice: this behaves like Dispatch’s horizontal roster bar. */}
