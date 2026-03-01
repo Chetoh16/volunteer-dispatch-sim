@@ -229,7 +229,17 @@ function formatMMSS(totalSeconds: number) {
 
 // Main screen component.
 // In practice: holds the game state (volunteers list, timer, modal open/close) and renders the UI.
-export default function VolunteerDashboard() {
+export default function VolunteerDashboard({
+    isSelecting,
+    selectedVolunteerId,
+    onSelectVolunteer,
+    onAssignVolunteer
+}: {
+    isSelecting: boolean;
+    selectedVolunteerId: number | null;
+    onSelectVolunteer: (id: number) => void;
+    onAssignVolunteer: (id: number) => void;
+}) {
     // Generates a pool of 7 volunteers ONCE for the session.
     // In practice: you have 7 “possible” volunteers, but you start showing only 5.
     const allVolunteers = useMemo(() => makeVolunteerList(7, 123), []);

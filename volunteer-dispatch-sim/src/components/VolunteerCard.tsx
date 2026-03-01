@@ -8,6 +8,7 @@ import {
     type Volunteer,
     type VolunteerStatus,
 } from "../data/volunteers";
+
 type VolunteerCardProps = {
     volunteer: Volunteer;
 
@@ -19,6 +20,8 @@ type VolunteerCardProps = {
 
     // Optional left-click select
     onSelect?: (volunteerId: number) => void;
+
+    
 };
 
 function statusClass(status: VolunteerStatus) {
