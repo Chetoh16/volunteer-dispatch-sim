@@ -6,7 +6,8 @@ import EndScreen from './components/EndScreen';
 import type { CountryState } from './data/countries';
 import StartScreen from './components/StartScreen';
 import { calculateScore } from './data/score';
-import type { Opportunity } from './data/opportunities';
+import { opportunities, type Opportunity } from './data/opportunities';
+import OpportunityCard from './components/OpportunityCard';
 
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
@@ -28,6 +29,24 @@ function App() {
   // Score initialised to 0
   const [score, setScore] = useState(0);
 
+
+
+  const handleCountryClicks = (iso: string) => {
+    const opportunity = opportunities.find(o => o.countryIso === iso);
+    
+    if(!opportunity) return;
+
+    setActiveOpportunity(opportunity);
+
+    // Mark country as active -- HOWEVER ONLY MARK AS ACTIVE AFTER ASSIGNING VOLUNTEER
+    // 
+    // setCountries(prev =>
+    //   prev.map(c =>
+    //      IF VOLUNTEERASSIGNED === TRUE
+    //     c.iso === iso ? { ...c, status: "active" } : c
+    //   )
+    // );
+  }
 
 
   // --------- Timer ---------
@@ -115,9 +134,16 @@ function App() {
 
     <div className="w-screen h-screen flex flex-col">
       <div className="flex-1">
-        <Map countries={countries} setCountries={setCountries} />
+        <Map countries={countries} setCountries={setCountries} onCountryClick={handleCountryClicks} />
+        
       </div>
     </div>
+
+    {activeOpportunity && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <OpportunityCard {...activeOpportunity} />
+      </div>
+    )}
 
     {/* Render Start Screen */}
     {!gameStarted && <StartScreen onStart={() => setGameStarted(true)} />}

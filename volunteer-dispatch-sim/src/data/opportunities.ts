@@ -44,7 +44,7 @@ export const opportunities: Opportunity[] = [
         type: "Social Work",
         requirements: {
             age: "18-30",
-            language: ["English, Italian"],
+            language: ['English', 'Italian'],
             other: ["Interest in social justice", "Cultural sensitivity", "Empathy", "Facilitation interest"]
         },
         image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop"
@@ -60,7 +60,7 @@ export const opportunities: Opportunity[] = [
         type: "Education",
         requirements: {
             age: "18-30",
-            language: ["English, Spanish"],
+            language: ['English', 'Spanish'],
             other: ["Patient", "Experience with children", "TEFL certification a plus", "Creative teaching"]
         },
         image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop"
@@ -76,7 +76,7 @@ export const opportunities: Opportunity[] = [
         type: "Social Work",
         requirements: {
             age: "18-30",
-            language: ["English, Spanish"],
+            language: ['English', 'Spanish'],
             other: ["Interest in tourism", "Cultural appreciation", "Photography skills a plus", "Research interest"]
         },
         image: "https://images.pexels.com/photos/1659437/pexels-photo-1659437.jpeg?w=400&h=300&fit=crop"
@@ -92,7 +92,7 @@ export const opportunities: Opportunity[] = [
         type: "Environment",
         requirements: {
             age: "18-30",
-            language: ["English"],
+            language: ['English'],
             other: ["Love for ocean", "SCUBA certification a plus", "Physically fit", "Swimming ability"]
         },
         image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop"
@@ -108,7 +108,7 @@ export const opportunities: Opportunity[] = [
         type: "Education",
         requirements: {
             age: "18-30",
-            language: ["English"],
+            language: ['English'],
             other: ["Experience with youth", "Energetic", "Role model mentality", "Leadership skills"]
         },
         image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop"
@@ -124,7 +124,7 @@ export const opportunities: Opportunity[] = [
         type: "Environment",
         requirements: {
             age: "18-30",
-            language: ["English, Spanish"],
+            language: ['English', 'Spanish'],
             other: ["Outdoor enthusiast", "Physical fitness", "Biology background a plus", "Animal handling interest"]
         },
         image: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=400&h=300&fit=crop"
@@ -140,7 +140,7 @@ export const opportunities: Opportunity[] = [
         type: "Health",
         requirements: {
             age: "18-30",
-            language: ["English"],
+            language: ['English'],
             other: ["Medical/health background a plus", "Empathetic", "Organized", "Communication skills"]
         },
         image: "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=400&h=300&fit=crop"
@@ -156,7 +156,7 @@ export const opportunities: Opportunity[] = [
         type: "Education",
         requirements: {
             age: "18-30",
-            language: ["English"],
+            language: ['English'],
             other: ["Experience with women's issues", "Cultural sensitivity", "Inspirational", "Facilitation skills"]
         },
         image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=300&fit=crop"
@@ -172,7 +172,7 @@ export const opportunities: Opportunity[] = [
         type: "Health",
         requirements: {
             age: "18-30",
-            language: ["English"],
+            language: ['English'],
             other: ["Physically fit", "Engineering background a plus", "Problem solver", "Community work experience"]
         },
         image: "https://images.unsplash.com/photo-1538300342682-cf57afb97285?w=400&h=300&fit=crop"
@@ -188,7 +188,7 @@ export const opportunities: Opportunity[] = [
         type: "Education",
         requirements: {
             age: "18-30",
-            language: ["English, Spanish"],
+            language: ['English', 'Spanish'],
             other: ["Knowledge of MS Office/Google Suite", "Troubleshooting skills", "Creative", "Patient teaching style"]
         },
         image: "https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=400&h=300&fit=crop"
@@ -204,7 +204,7 @@ export const opportunities: Opportunity[] = [
         type: "Social Work",
         requirements: {
             age: "18-30",
-            language: ["English, Arabic, Farsi"],
+            language: ['English', 'Arabic', 'Farsi'],
             other: ["Empathy", "Cultural sensitivity", "Resilience", "Crisis management skills"]
         },
         image: "https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg?w=400&h=300&fit=crop"
@@ -220,7 +220,7 @@ export const opportunities: Opportunity[] = [
         type: "Environment",
         requirements: {
             age: "18-30",
-            language: ["English"],
+            language: ['English'],
             other: ["Love for outdoors", "Sustainable farming knowledge", "Team player", "Physical labor comfortable"]
         },
         image: "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=400&h=300&fit=crop"
@@ -236,7 +236,7 @@ export const opportunities: Opportunity[] = [
         type: "Education",
         requirements: {
             age: "18-30",
-            language: ["English"],
+            language: ['English'],
             other: ["Interest in renewable energy", "Problem solving", "Technical mindset", "Basic electrical knowledge"]
         },
         image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&h=300&fit=crop"
@@ -252,7 +252,7 @@ export const opportunities: Opportunity[] = [
         type: "Social Work",
         requirements: {
             age: "18-30",
-            language: ["English, Japanese"],
+            language: ['English', 'Japanese'],
             other: ["Kind heart", "Interest in Japanese culture", "Reliable", "Patient"]
         },
         image: "https://images.pexels.com/photos/7551677/pexels-photo-7551677.jpeg?w=400&h=300&fit=crop"

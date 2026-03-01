@@ -12,7 +12,7 @@ interface OpportunityCardInfo {
     type: string;
     requirements: {
         age: string;
-        language: string;
+        language: string[];
         other?: string[];
     };
     image: string;
@@ -74,7 +74,7 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
                     <span className="requirements-label">Requirements:</span>
                     <ul className="requirements-list">
                         <li><strong>Age:</strong> {requirements.age}</li>
-                        <li><strong>Language:</strong> {requirements.language}</li>
+                        <li><strong>Language:</strong> {requirements.language.join(", ")}</li>
                         {requirements.other && requirements.other.map((item, index) => (
                             <li key={index}>{item}</li>
                         ))}
