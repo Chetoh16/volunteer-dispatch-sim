@@ -13,11 +13,13 @@ function App() {
 
   
   // 5 min timer: 5x30
-  const[time, setTime] = useState(300);
+  const[time, setTime] = useState(30);
 
   const [countries, setCountries] = useState<CountryState[]>([]);
 
   const [gameStarted, setGameStarted] = useState(false);
+
+  const [gameEnded, setGameEnded] = useState(false);
 
 
 
@@ -39,6 +41,7 @@ function App() {
         }
         else{
           clearInterval(interval); // stop timer when reaching 0
+          setGameEnded(true);
           return 0;
         }
       });
@@ -71,6 +74,7 @@ function App() {
 
   useEffect(() => {
     if (!gameStarted) return; // only activate timer when game has started
+    if (gameEnded) return;    // only activate timer when game is not over
 
     if (countries.length === 0) return; // wait until countries are initialised
 
@@ -88,7 +92,7 @@ function App() {
           c.iso === chosen.iso ? { ...c, status: "alert" } : c
         );
       });
-    }, Math.random() * 15000 + 15000); // random between 15s-30s
+    }, Math.random() * 5000 + 1000); // random between 15s-30s
 
     return () => clearInterval(alertInterval);
 
