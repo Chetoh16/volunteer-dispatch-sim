@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { VolunteerCard } from "./VolunteerCard";
 
 // Imports data + helper functions from data layer.
 // - COURSE_ACRONYMS: maps course -> short label shown on the photo
@@ -14,101 +15,6 @@ import {
     type VolunteerStatus,
 } from "../data/volunteers";
 
-// Props contract for the volunteer card UI.
-// In practice: the card displays a volunteer and calls callbacks when the user interacts with it.
-type VolunteerCardProps = {
-    volunteer: Volunteer;                      // The volunteer whose data is shown on this card
-    onThumbsUp: (volunteerId: number) => void; // Called when the user clicks 👍 (increase experience/level)
-    onOpenProfile: (volunteerId: number) => void; // Called when the user opens the profile (right-click)
-    onSelect?: (volunteerId: number) => void;  // Optional: left-click action (here used to open profile too)
-};
-
-// Converts a status into Tailwind classes.
-// In practice: determines the badge colour shown on the card (top-left).
-function statusClass(status: VolunteerStatus) {
-    switch (status) {
-        case "available":
-            return "bg-green-100 text-green-900";
-        case "out_volunteering":
-            return "bg-blue-100 text-blue-900";
-        case "resting":
-            return "bg-purple-100 text-purple-900";
-        case "unavailable":
-            return "bg-gray-200 text-gray-800";
-    }
-}
-
-// UI component that renders one volunteer card (portrait + status badge + experience + course acronym + name).
-// In practice: this is what the dispatcher sees in the horizontal strip.
-function VolunteerCard({ volunteer, onThumbsUp, onOpenProfile, onSelect }: VolunteerCardProps) {
-    // Lookup course acronym for bottom-left overlay (e.g. CS, ART).
-    const acronym = COURSE_ACRONYMS[volunteer.course] ?? "UNK";
-
-    // Lookup display label for status (e.g. "Available").
-    const statusLabel = VOLUNTEER_STATUS_LABEL[volunteer.status];
-
-    return (
-        <div
-            // Card sizing/layout. `shrink-0` prevents cards squeezing; keeps them in a horizontal row.
-            className="w-[180px] shrink-0 select-none overflow-hidden rounded-lg border border-black/30 bg-[#0f1518] shadow-sm"
-
-            // Left-click: optional selection action (here you pass onSelect=handleOpenProfile).
-            onClick={() => onSelect?.(volunteer.id)}
-
-            // Right-click: open profile modal instead of browser context menu.
-            onContextMenu={(e) => {
-                e.preventDefault();            // stops default right-click menu
-                onOpenProfile(volunteer.id);   // tells dashboard to open the profile modal
-            }}
-        >
-            <div className="relative h-[110px] w-full bg-[#1b2a2e]">
-                {/* Photo area. If photoUrl exists, render it; otherwise show placeholder text. */}
-                {volunteer.photoUrl ? (
-                    <img src={volunteer.photoUrl} alt={volunteer.name} className="h-full w-full object-cover" />
-                ) : (
-                    <div className="flex h-full w-full items-center justify-center text-xs text-gray-400">
-                        No photo
-                    </div>
-                )}
-
-                {/* Status badge shown top-left on the photo */}
-                <div className="absolute left-2 top-2">
-                    <span
-                        className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusClass(volunteer.status)}`}
-                    >
-                        {statusLabel}
-                    </span>
-                </div>
-
-                {/* Experience button (👍). Clicking increases experience via dashboard state update. 
-                    <button
-                        className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[10px] font-semibold text-gray-900"
-                        onClick={(e) => {
-                            e.stopPropagation();   // prevents the click also triggering the card's onClick (opening profile)
-                            onThumbsUp(volunteer.id);
-                        }}
-                        aria-label="Increase experience by 1"
-                    >
-                        👍 {volunteer.level_of_experience}
-                    </button>
-                */}
-
-
-                {/* Course acronym overlay shown bottom-left on the photo */}
-                <div className="absolute bottom-2 left-2">
-                    <span className="rounded bg-black/70 px-2 py-1 text-[10px] font-bold text-white">
-                        {acronym}
-                    </span>
-                </div>
-            </div>
-
-            {/* Name section under the photo */}
-            <div className="border-t border-black/30 bg-[#141c20] px-2 py-2">
-                <div className="truncate text-[12px] font-semibold text-gray-100">{volunteer.name}</div>
-            </div>
-        </div>
-    );
-}
 
 // Props contract for the profile modal.
 // In practice: this is the “full profile view” for one volunteer.
@@ -367,7 +273,10 @@ export default function VolunteerDashboard({
                                 volunteer={v}
                                 onThumbsUp={handleThumbsUp}
                                 onOpenProfile={handleOpenProfile}
-                                onSelect={handleOpenProfile}
+                                isSelecting={isSelecting}
+                                isSelected={selectedVolunteerId === v.id}
+                                onSelectVolunteer={onSelectVolunteer}
+                                onAssignVolunteer={handleAssign}
                             />
                         ))}
                     </div>

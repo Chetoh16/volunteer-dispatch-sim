@@ -9,6 +9,9 @@ import {
     type VolunteerStatus,
 } from "../data/volunteers";
 
+
+// Props contract for the volunteer card UI.
+// In practice: the card displays a volunteer and calls callbacks when the user interacts with it.
 type VolunteerCardProps = {
     volunteer: Volunteer;
 
@@ -27,6 +30,8 @@ type VolunteerCardProps = {
     
 };
 
+// Converts a status into Tailwind classes.
+// In practice: determines the badge colour shown on the card (top-left).
 function statusClass(status: VolunteerStatus) {
     switch (status) {
         case "available":
