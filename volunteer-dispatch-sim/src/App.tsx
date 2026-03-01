@@ -34,6 +34,8 @@ function App() {
 
   const [selectedVolunteerId, setSelectedVolunteerId] = useState<number | null>(null);
 
+  const [volunteerResetKey, setVolunteerResetKey] = useState(0);
+
   const [assignments, setAssignments] = useState<
     { opportunityId: number; volunteerId: number; volunteerName: string }[]
   >([]);
@@ -61,6 +63,9 @@ function App() {
     setCountries(prev =>
       prev.map(c => ({ ...c, status: "idle" }))
     );
+
+    // Trigger volunteer reset
+    setVolunteerResetKey(prev => prev + 1);
   };
 
 
@@ -238,6 +243,7 @@ function App() {
           selectedVolunteerId={selectedVolunteerId}
           onSelectVolunteer={(id) => setSelectedVolunteerId(id)}
           onAssignVolunteer={handleAssignVolunteer}
+          resetKey={volunteerResetKey}
         />
       </div>
 

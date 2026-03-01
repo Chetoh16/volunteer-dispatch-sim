@@ -102,20 +102,28 @@ export default function VolunteerDashboard({
     isSelecting,
     selectedVolunteerId,
     onSelectVolunteer,
-    onAssignVolunteer
+    onAssignVolunteer,
+    resetKey  
 }: {
     time: number;
     isSelecting: boolean;
     selectedVolunteerId: number | null;
     onSelectVolunteer: (id: number) => void;
     onAssignVolunteer: (id: number, name:string) => void;
+    resetKey: number;
 }) {
     // Generates a pool of 7 volunteers ONCE for the session.
     // In practice: you have 7 “possible” volunteers, but you start showing only 5.
-    const allVolunteers = useMemo(() => makeVolunteerList(7, 123), []);
+    // dependent on resetKey changing
+    const allVolunteers = useMemo(() => makeVolunteerList(7, 123), [resetKey]);
 
     // The active volunteers currently visible in the dashboard (starts with 5).
     const [volunteers, setVolunteers] = useState<Volunteer[]>(() => allVolunteers.slice(0, 5));
+
+    // Reset volunteers whenever resetKey changes
+    useEffect(() => {
+        setVolunteers(allVolunteers.slice(0, 5));
+    }, [allVolunteers]);
 
     // Which volunteer profile is currently open in the modal, by ID.
     const [profileId, setProfileId] = useState<number | null>(null);
