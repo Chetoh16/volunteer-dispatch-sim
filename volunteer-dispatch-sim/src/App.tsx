@@ -206,7 +206,7 @@ function App() {
       )}
 
       {/* Dashboard */}
-      <div className="h-[200px] border-t border-black/40 relative z-10">
+      <div className="h-[200px] border-t border-black/40 relative z-[100]">
         <VolunteerDashboard
           isSelecting={isSelectingVolunteer}
           selectedVolunteerId={selectedVolunteerId}

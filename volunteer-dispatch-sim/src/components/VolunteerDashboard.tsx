@@ -33,7 +33,7 @@ function ProfileModal({ volunteer, onClose, onThumbsUp, onCompleteExchange }: Pr
     return (
         <div
             // Fullscreen overlay behind the modal.
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 p-4"
 
             // Clicking the dark backdrop closes the modal (but clicking inside does not).
             onMouseDown={(e) => {
@@ -269,7 +269,7 @@ export default function VolunteerDashboard({
 
             {/* Bottom strip pinned to screen bottom.
                 In practice: this behaves like Dispatch’s horizontal roster bar. */}
-            <div className="fixed bottom-0 left-0 right-0 border-t border-black/40 bg-[#0f1518]/95 backdrop-blur">
+            <div className="fixed bottom-0 left-0 right-0 z-[120] border-t border-black/40 bg-[#0f1518]/95 backdrop-blur">
                 <div className="overflow-x-auto px-4 py-3">
                     {/* The inner row:
                         - flex: horizontal row of cards
