@@ -54,13 +54,13 @@ export type Course = keyof typeof COURSE_ACRONYMS;
 })();
 
 export type Volunteer = {
-    id: string;
+    id: number;
     name: string;
     age: number; // 18..30
     headline?: string;
 
+    // All volunteers start as "available"
     status: VolunteerStatus;
-    remoteOk?: boolean;
 
     level_of_experience: number; // 0..10
 
@@ -68,17 +68,7 @@ export type Volunteer = {
     languages?: string[];
     tags?: string[];
 
-    // Scoring
-    exchanges_completed: number;
-    score: number;
-
     photoUrl?: string;
-
-    fit?: {
-        score: number; // 0..100
-        matched: string[];
-        missing: string[];
-    };
 };
 
 // Option pools
@@ -154,14 +144,6 @@ export const VOLUNTEER_POOL = {
         "Event Stewarding",
         "Fundraising",
     ],
-
-    statuses: [
-        "available",
-        "out_volunteering",
-        "resting",
-        "unavailable",
-        "at_uni_work",
-    ] as const,
 };
 
 export const COURSE_INTERESTS: Record<Course, string[]> = {
@@ -228,24 +210,16 @@ export function mulberry32(seed: number) {
     };
 }
 
-// Scoring rule (single source of truth)
-export function scoreForExchange(v: Volunteer): number {
-    return 10 + v.level_of_experience;
-}
-
 export const FIXED_VOLUNTEER: Volunteer = {
-    id: "v_fixed_001",
+    id: 2350831597978,
     name: "Dylan",
     age: 27,
     headline: "MASTERS Computer Science • Questionable Ethics Expert",
     status: "available",
-    remoteOk: true,
     level_of_experience: 1,
     course: "Computer Science",
     languages: ["English"],
     tags: [],
-    exchanges_completed: 0,
-    score: 0,
     photoUrl: "",
 };
 
@@ -264,15 +238,14 @@ export function makeRandomVolunteer(
         attempts++;
     } while (reservedNames.has(name) && attempts < 20);
 
-    const status = pickOne(VOLUNTEER_POOL.statuses, rnd);
+    // All volunteers start available
+    const status: VolunteerStatus = "available";
 
     const age = Math.floor(rnd() * (30 - 18 + 1)) + 18;
     const level_of_experience = clamp(Math.round(rnd() * 10), 0, 10);
 
     const course = pickOne(VOLUNTEER_POOL.courses, rnd);
     const headline = makeHeadline(course, rnd);
-
-    const remoteOk = rnd() > 0.35;
 
     const languages = pickManyUnique(
         VOLUNTEER_POOL.languages,
@@ -287,18 +260,15 @@ export function makeRandomVolunteer(
     );
 
     return {
-        id: `v_${index}_${Math.floor(rnd() * 1e9)}`,
+        id: Number(`${index}${Math.floor(rnd() * 1e12)}`),
         name,
         age,
         headline,
         status,
-        remoteOk,
         level_of_experience,
         course,
         languages,
         tags,
-        exchanges_completed: 0,
-        score: 0,
         photoUrl: "",
     };
 }
