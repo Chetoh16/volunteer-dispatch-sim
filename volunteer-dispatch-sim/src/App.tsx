@@ -27,6 +27,14 @@ function App() {
 
   const [gameEnded, setGameEnded] = useState(false);
 
+  const [isSelectingVolunteer, setIsSelectingVolunteer] = useState(false);
+
+  const [selectedVolunteerId, setSelectedVolunteerId] = useState<number | null>(null);
+
+  const [assignments, setAssignments] = useState<
+    { opportunityId: number; volunteerId: number; volunteerName: string }[]
+  >([]);
+
   // Score initialised to 0
   const [score, setScore] = useState(0);
 
