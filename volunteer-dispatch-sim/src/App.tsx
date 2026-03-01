@@ -5,6 +5,7 @@ import Timer from './components/Timer';
 import EndScreen from './components/EndScreen';
 import type { CountryState } from './data/countries';
 import StartScreen from './components/StartScreen';
+import { calculateScore } from './data/score';
 
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
@@ -13,7 +14,7 @@ function App() {
 
   
   // 5 min timer: 5x30
-  const[time, setTime] = useState(30);
+  const[time, setTime] = useState(300);
 
   const [countries, setCountries] = useState<CountryState[]>([]);
 
@@ -21,6 +22,8 @@ function App() {
 
   const [gameEnded, setGameEnded] = useState(false);
 
+  // Score initialised to 0
+  const [score, setScore] = useState(0);
 
 
 
@@ -92,7 +95,7 @@ function App() {
           c.iso === chosen.iso ? { ...c, status: "alert" } : c
         );
       });
-    }, Math.random() * 5000 + 1000); // random between 15s-30s
+    }, Math.random() * 15000 + 15000); // random between 15s-30s
 
     return () => clearInterval(alertInterval);
 

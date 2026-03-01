@@ -12,7 +12,7 @@ interface MapProps {
 
     
     // setCountries is a function that updates the countries state
-    // can call it either with a new array of countries or a function that transforms the previous array into a new array
+    // Can call it either with a new array of countries or a function that transforms the previous array into a new array
     setCountries: React.Dispatch<React.SetStateAction<CountryState[]>>;
 }
 
