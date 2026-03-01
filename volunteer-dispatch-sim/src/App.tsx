@@ -97,6 +97,7 @@ function App() {
 
   // ---------  Random Opportunity Generator ---------
 
+  
   useEffect(() => {
     if (!gameStarted) return; // only activate timer when game has started
     if (gameEnded) return;    // only activate timer when game is not over
@@ -105,19 +106,29 @@ function App() {
 
     const alertInterval = setInterval(() => {
       setCountries(prev => {
-        const idleCountries = prev.filter(c => c.status === "idle");
-        if (idleCountries.length === 0) return prev;
+
+        // Get all country ISO codes that have opportunities
+        const opportunityIsos = new Set(opportunities.map(o => o.countryIso));
+
+        // Only allow countries that:
+        // 1. Are idle
+        // 2. Have at least one opportunity
+        const validIdleCountries = prev.filter(
+          c => c.status === "idle" && opportunityIsos.has(c.iso)
+        );
+
+        if (validIdleCountries.length === 0) return prev;
 
         // Pick random idle country
-        const randomIndex = Math.floor(Math.random() * idleCountries.length);
-        const chosen = idleCountries[randomIndex];
+        const randomIndex = Math.floor(Math.random() * validIdleCountries.length);
+        const chosen = validIdleCountries[randomIndex];
 
         // Return new countries array with that country set to 'alert'
         return prev.map(c =>
           c.iso === chosen.iso ? { ...c, status: "alert" } : c
         );
       });
-    }, Math.random() * 15000 + 15000); // random between 15s-30s
+    }, Math.random() * 5000 + 5000); // random between 15s-30s
 
     return () => clearInterval(alertInterval);
 
@@ -141,7 +152,8 @@ function App() {
 
     {activeOpportunity && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <OpportunityCard {...activeOpportunity} />
+        <OpportunityCard {...activeOpportunity} onClose={() => setActiveOpportunity(null)}/> 
+        
       </div>
     )}
 

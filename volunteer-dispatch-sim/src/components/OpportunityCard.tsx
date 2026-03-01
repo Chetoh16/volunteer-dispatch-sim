@@ -16,6 +16,9 @@ interface OpportunityCardInfo {
         other?: string[];
     };
     image: string;
+
+    // to close the card
+    onClose: () => void;
 }
 
 const OpportunityCard: React.FC<OpportunityCardInfo> = ({ 
@@ -27,7 +30,8 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
     difficulty,
     type,
     requirements,
-    image
+    image,
+    onClose
 }) => {
     const handleSelectVolunteerButton = () => {
         alert(`You selected: ${name} in ${location}`);
@@ -45,6 +49,17 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
 
     return (
         <div className="opportunity-card">
+
+            <div className="relative">
+
+            <button
+                onClick={onClose}
+                className="close-button"
+            >
+                ✕
+            </button>
+            </div>
+
             <div className="card-image-container">
                 <img src={image} alt={name} className="card-image" />
             </div>
@@ -86,6 +101,8 @@ const OpportunityCard: React.FC<OpportunityCardInfo> = ({
                     onClick={handleSelectVolunteerButton}>
                     Select Volunteer
                 </button>
+
+                
             </div>
         </div>
     );
