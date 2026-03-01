@@ -16,6 +16,12 @@ read the description, assing a volunteer that fits best
 
 4) Task Allocation
 - Andzhelina: Opportunities
-- Ege: Map + data
+- Ege: Map + data. Game loop/logic.
 - Tudor: Volunteers
 
+
+- Implemented map and tooltip for map.
+- Taking map init from map.tsx to app as app will handle gamelogic and loop and alerts
+- App generates random opportunities every 15-30 seconds.
+
+- Change Dashboard to Volunteer Dashboard

@@ -1,73 +1,130 @@
-//TESTING
+import { useEffect, useState } from 'react';
+import './App.css'
+import Map from './components/Map'
+import Timer from './components/Timer';
+import EndScreen from './components/EndScreen';
+import type { CountryState } from './data/countries';
+import StartScreen from './components/StartScreen';
+import { calculateScore } from './data/score';
 
-import OpportunityCard from './components/OpportunityCard';
-import { opportunities } from './data/opportunities';
-import './App.css';
+
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
+
+function App() {
+
+  
+  // 5 min timer: 5x30
+  const[time, setTime] = useState(300);
+
+  const [countries, setCountries] = useState<CountryState[]>([]);
+
+  const [gameStarted, setGameStarted] = useState(false);
+
+  const [gameEnded, setGameEnded] = useState(false);
+
+  // Score initialised to 0
+  const [score, setScore] = useState(0);
+
+
+
+  // --------- Timer ---------
+
+  useEffect(() =>{
+    if (!gameStarted) return; // only activate timer when game has started
+
+
+    // setInterval runs a function repeatedly.
+    // first argument: function to run
+    // second argument: delay in milliseconds
+    const interval = setInterval(() => {
+
+      setTime(prev => {
+        if(prev>0){
+          return prev-1; // stop timer when reaching 0
+        }
+        else{
+          clearInterval(interval); // stop timer when reaching 0
+          setGameEnded(true);
+          return 0;
+        }
+      });
+    }, 1000); // 1000 milliseconds = 1 second
+
+    // cleanup (when no longer displayed on the screen)
+    return () => clearInterval(interval);
+  },[gameStarted]); // empty dependency array = run once, [gameStarted] run whenever gameStarted changes
+ 
+
+   // ---------  Initialise countries ---------
+
+  useEffect(() => {
+        if (countries.length > 0) return; // already initialised
+
+        fetch(geoUrl)
+            .then(res => res.json())
+            .then(worldData => {
+            const geographies = worldData.objects.countries.geometries;
+            const initialCountries: CountryState[] = geographies.map((geo: any) => ({
+                name: geo.properties.name,
+                iso: geo.id,
+                status: "idle",
+            }));
+            setCountries(initialCountries);
+            });
+    }, [countries, setCountries]);
+
+  // ---------  Random Opportunity Generator ---------
+
+  useEffect(() => {
+    if (!gameStarted) return; // only activate timer when game has started
+    if (gameEnded) return;    // only activate timer when game is not over
+
+    if (countries.length === 0) return; // wait until countries are initialised
+
+    const alertInterval = setInterval(() => {
+      setCountries(prev => {
+        const idleCountries = prev.filter(c => c.status === "idle");
+        if (idleCountries.length === 0) return prev;
+
+        // Pick random idle country
+        const randomIndex = Math.floor(Math.random() * idleCountries.length);
+        const chosen = idleCountries[randomIndex];
+
+        // Return new countries array with that country set to 'alert'
+        return prev.map(c =>
+          c.iso === chosen.iso ? { ...c, status: "alert" } : c
+        );
+      });
+    }, Math.random() * 15000 + 15000); // random between 15s-30s
+
+    return () => clearInterval(alertInterval);
+
+  }, [countries, gameStarted]);
+
+  // ---------  Render ---------
 
 function App() {
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>🌍 Volunteer Opportunities</h1>
-      </header>
-      
-      <main className="cards-container">
-        {opportunities.map(opportunity => (
-          <OpportunityCard
-            key={opportunity.id}
-            id={opportunity.id}
-            name={opportunity.name}
-            location={opportunity.location}
-            description={opportunity.description}
-            sdg={opportunity.sdg}
-            requirements={opportunity.requirements}
-            difficulty={opportunity.difficulty}    
-            type={opportunity.type}                  
-            image={opportunity.image}
-          />
-        ))}
-      </main>
+    <>
+    <div>
+      <Timer time={time}/>
+      <br/><br/>
     </div>
-  );
+
+    <div className="w-screen h-screen flex flex-col">
+      <div className="flex-1">
+        <Map countries={countries} setCountries={setCountries} />
+      </div>
+    </div>
+
+    {/* Render Start Screen */}
+    {!gameStarted && <StartScreen onStart={() => setGameStarted(true)} />}
+
+    {/* Check if time hit 0, (in the future check if no opportunities left as well) */}
+    {/* Render End Screen */}
+    {time === 0 && <EndScreen time={time} />}
+    </>
+  )
 }
 
 export default App;
-
-
-//originsl version
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-//  thatsmy app
