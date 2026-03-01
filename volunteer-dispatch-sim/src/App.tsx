@@ -13,11 +13,14 @@ import VolunteerDashboard from './components/VolunteerDashboard';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
 
+
+
+
 function App() {
 
   
   // 5 min timer: 5x30
-  const[time, setTime] = useState(300);
+  const[time, setTime] = useState(10);
 
   const [countries, setCountries] = useState<CountryState[]>([]);
 
@@ -39,6 +42,28 @@ function App() {
   const [score, setScore] = useState(0);
 
 
+  const resetGame = () => {
+    // Reset timer
+    setTime(300);
+
+    // Reset game flags
+    setGameEnded(false);
+    setGameStarted(false);
+
+    // Reset gameplay state
+    setActiveOpportunity(null);
+    setIsSelectingVolunteer(false);
+    setSelectedVolunteerId(null);
+    setAssignments([]);
+    setScore(0);
+
+    // Reset all countries back to idle
+    setCountries(prev =>
+      prev.map(c => ({ ...c, status: "idle" }))
+    );
+  };
+
+
   const handleAssignVolunteer = (volunteerId: number, volunteerName: string) => {
     if (!activeOpportunity) return;
 
@@ -47,7 +72,7 @@ function App() {
       {
         opportunityId: activeOpportunity.id,
         volunteerId,
-        volunteerName: `Volunteer #${volunteerName}`, // temp until we pass real name
+        volunteerName: volunteerName, // temp until we pass real name
       }
     ]);
 
@@ -225,7 +250,13 @@ function App() {
 
     {/* Check if time hit 0, (in the future check if no opportunities left as well) */}
     {/* Render End Screen */}
-    {time === 0 && <EndScreen time={time} />}
+    {gameEnded && (
+      <EndScreen
+        time={time}
+        score={score}
+        onPlayAgain={resetGame}
+      />
+    )}
     </>
   )
 }

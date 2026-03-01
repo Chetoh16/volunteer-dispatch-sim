@@ -1,8 +1,10 @@
-const EndScreen = ({
-  time,
-}: {
+type EndScreenProps = {
   time: number;
-}) => {
+  score: number;
+  onPlayAgain: () => void;
+};
+
+const EndScreen = ({ time, score, onPlayAgain }: EndScreenProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center
                     bg-black/40 backdrop-blur-md">
@@ -19,14 +21,16 @@ const EndScreen = ({
         </div>
 
         <div className="text-lg text-gray-600 mb-8">
-          Score: SCORE
+          Score: {score}
         </div>
 
         <button
           className="bg-indigo-600 hover:bg-indigo-700
                      text-white font-semibold 
                      px-6 py-3 rounded-xl 
-                     transition duration-200">
+                     transition duration-200"
+          onClick={onPlayAgain}
+        >
           Play Again
         </button>
 
