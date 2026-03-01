@@ -16,6 +16,8 @@ import {
 } from "../data/volunteers";
 
 
+
+
 // Props contract for the profile modal.
 // In practice: this is the “full profile view” for one volunteer.
 type ProfileModalProps = {
@@ -226,6 +228,14 @@ export default function VolunteerDashboard({
                 };
             })
         );
+    }
+
+    function handleAssign(id: number) {
+        // Remove volunteer from local dashboard state
+        setVolunteers((prev) => prev.filter((v) => v.id !== id));
+
+        // Inform parent (App.tsx)
+        onAssignVolunteer(id);
     }
 
     // Derived values (computed from state each render).
