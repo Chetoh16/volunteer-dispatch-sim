@@ -1,19 +1,15 @@
-// components/VolunteerDashboard.tsx
-
-// Imports React hooks used for state, timers, and “run once” logic.
 import { useEffect, useMemo, useRef, useState } from "react";
 
-// Imports data + helper functions from your data layer.
-// - COURSE_ACRONYMS: maps course → short label shown on the photo
-// - VOLUNTEER_STATUS_LABEL: maps status → user-friendly label
-// - makeVolunteerList: generates volunteers (incl. Dylan if your generator prepends him)
+// Imports data + helper functions from data layer.
+// - COURSE_ACRONYMS: maps course -> short label shown on the photo
+// - VOLUNTEER_STATUS_LABEL: maps status -> user-friendly label
+// - makeVolunteerList: generates volunteers 
 // - scoreForExchange: scoring rule for completing an exchange
 // - Volunteer / VolunteerStatus: TypeScript types used for safety
 import {
     COURSE_ACRONYMS,
     VOLUNTEER_STATUS_LABEL,
     makeVolunteerList,
-    scoreForExchange,
     type Volunteer,
     type VolunteerStatus,
 } from "../data/volunteers";
@@ -22,9 +18,9 @@ import {
 // In practice: the card displays a volunteer and calls callbacks when the user interacts with it.
 type VolunteerCardProps = {
     volunteer: Volunteer;                      // The volunteer whose data is shown on this card
-    onThumbsUp: (volunteerId: string) => void; // Called when the user clicks 👍 (increase experience)
-    onOpenProfile: (volunteerId: string) => void; // Called when the user opens the profile (right-click)
-    onSelect?: (volunteerId: string) => void;  // Optional: left-click action (here used to open profile too)
+    onThumbsUp: (volunteerId: number) => void; // Called when the user clicks 👍 (increase experience/level)
+    onOpenProfile: (volunteerId: number) => void; // Called when the user opens the profile (right-click)
+    onSelect?: (volunteerId: number) => void;  // Optional: left-click action (here used to open profile too)
 };
 
 // Converts a status into Tailwind classes.
@@ -39,8 +35,6 @@ function statusClass(status: VolunteerStatus) {
             return "bg-purple-100 text-purple-900";
         case "unavailable":
             return "bg-gray-200 text-gray-800";
-        case "at_uni_work":
-            return "bg-amber-100 text-amber-900";
     }
 }
 
@@ -86,17 +80,19 @@ function VolunteerCard({ volunteer, onThumbsUp, onOpenProfile, onSelect }: Volun
                     </span>
                 </div>
 
-                {/* Experience button (👍). Clicking increases experience via dashboard state update. */}
-                <button
-                    className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[10px] font-semibold text-gray-900"
-                    onClick={(e) => {
-                        e.stopPropagation();   // prevents the click also triggering the card's onClick (opening profile)
-                        onThumbsUp(volunteer.id);
-                    }}
-                    aria-label="Increase experience by 1"
-                >
-                    👍 {volunteer.level_of_experience}
-                </button>
+                {/* Experience button (👍). Clicking increases experience via dashboard state update. 
+                    <button
+                        className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[10px] font-semibold text-gray-900"
+                        onClick={(e) => {
+                            e.stopPropagation();   // prevents the click also triggering the card's onClick (opening profile)
+                            onThumbsUp(volunteer.id);
+                        }}
+                        aria-label="Increase experience by 1"
+                    >
+                        👍 {volunteer.level_of_experience}
+                    </button>
+                */}
+
 
                 {/* Course acronym overlay shown bottom-left on the photo */}
                 <div className="absolute bottom-2 left-2">
@@ -119,8 +115,8 @@ function VolunteerCard({ volunteer, onThumbsUp, onOpenProfile, onSelect }: Volun
 type ProfileModalProps = {
     volunteer: Volunteer;                          // The volunteer whose details are shown
     onClose: () => void;                           // Close the modal
-    onThumbsUp: (volunteerId: string) => void;     // Same thumbs up action, but from inside the modal
-    onCompleteExchange: (volunteerId: string) => void; // Adds score + exchange count
+    onThumbsUp: (volunteerId: number) => void;     // Same thumbs up action, but from inside the modal
+    onCompleteExchange: (volunteerId: number) => void; // Adds score + exchange count
 };
 
 // Profile modal UI.
@@ -174,13 +170,16 @@ function ProfileModal({ volunteer, onClose, onThumbsUp, onCompleteExchange }: Pr
                         <div className="text-xs text-gray-300">Experience</div>
                         <div className="mt-1 flex items-center justify-between">
                             <div className="font-semibold">{volunteer.level_of_experience}</div>
-                            <button
-                                type="button"
-                                className="rounded-lg bg-white/10 px-3 py-1 text-sm hover:bg-white/15"
-                                onClick={() => onThumbsUp(volunteer.id)}
-                            >
-                                👍 +1
-                            </button>
+                            {/* button to increase experience
+                                <button
+                                    type="button"
+                                    className="rounded-lg bg-white/10 px-3 py-1 text-sm hover:bg-white/15"
+                                    onClick={() => onThumbsUp(volunteer.id)}
+                                >
+                                    👍 +1
+                                </button>
+                            */}
+
                         </div>
                     </div>
 
@@ -188,24 +187,31 @@ function ProfileModal({ volunteer, onClose, onThumbsUp, onCompleteExchange }: Pr
                         <div className="text-xs text-gray-300">Exchanges completed</div>
                         <div className="mt-1 font-semibold">{volunteer.exchanges_completed}</div>
                     </div>
+                    
+                    {/*
+                        <div className="rounded-lg border border-white/10 bg-white/5 p-3">
+                            <div className="text-xs text-gray-300">Volunteer score</div>
+                            <div className="mt-1 font-semibold">{volunteer.score}</div>
+                        </div>
+                    */}
 
-                    <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-                        <div className="text-xs text-gray-300">Volunteer score</div>
-                        <div className="mt-1 font-semibold">{volunteer.score}</div>
-                    </div>
                 </div>
 
                 {/* “Complete exchange” action button.
-                    In practice: simulates finishing an exchange; awards points based on current experience. */}
+                    In practice: simulates finishing an exchange; awards points based on current experience.
+
                 <div className="mt-4 flex flex-wrap gap-2">
                     <button
                         type="button"
                         className="rounded-lg bg-emerald-600/90 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-600"
                         onClick={() => onCompleteExchange(volunteer.id)}
                     >
-                        Complete exchange (+{scoreForExchange(volunteer)} pts)
+                        
                     </button>
                 </div>
+
+                */}
+
             </div>
         </div>
     );
@@ -232,7 +238,7 @@ export default function VolunteerDashboard() {
     const [volunteers, setVolunteers] = useState<Volunteer[]>(() => allVolunteers.slice(0, 5));
 
     // Which volunteer profile is currently open in the modal, by ID.
-    const [profileId, setProfileId] = useState<string | null>(null);
+    const [profileId, setProfileId] = useState<number | null>(null);
 
     // Game timer in seconds since the dashboard mounted.
     const [elapsedSec, setElapsedSec] = useState(0);
@@ -269,9 +275,9 @@ export default function VolunteerDashboard() {
         }
     }, [elapsedSec, allVolunteers]);
 
-    // Handles clicking 👍 on a card.
+    // Handles clicking 👍 on a card. (for testing)
     // In practice: increases experience for that volunteer in state (clamped to 10).
-    function handleThumbsUp(id: string) {
+    function handleThumbsUp(id: number) {
         setVolunteers((prev) =>
             prev.map((v) =>
                 v.id === id
@@ -282,7 +288,7 @@ export default function VolunteerDashboard() {
     }
 
     // Opens the profile modal for the volunteer.
-    function handleOpenProfile(id: string) {
+    function handleOpenProfile(id: number) {
         setProfileId(id);
     }
 
@@ -293,15 +299,14 @@ export default function VolunteerDashboard() {
 
     // Completes an exchange for the volunteer.
     // In practice: increments exchanges count, awards score using scoreForExchange(v).
-    function handleCompleteExchange(id: string) {
+    function handleCompleteExchange(id: number) {
         setVolunteers((prev) =>
             prev.map((v) => {
                 if (v.id !== id) return v;
-                const gained = scoreForExchange(v);
+                //const gained = scoreForExchange(v);
                 return {
                     ...v,
-                    exchanges_completed: v.exchanges_completed + 1,
-                    score: v.score + gained,
+                    exchanges_completed: v.exchanges_completed + 1,                    
                 };
             })
         );
@@ -309,7 +314,7 @@ export default function VolunteerDashboard() {
 
     // Derived values (computed from state each render).
     // totalScore = player score (sum of all volunteer contributions)
-    const totalScore = volunteers.reduce((sum, v) => sum + v.score, 0);
+    //const totalScore = volunteers.reduce((sum, v) => sum + v.score, 0);
 
     // Finds the volunteer for the open modal. If profileId is null, no modal.
     const profileVolunteer = profileId
@@ -322,9 +327,12 @@ export default function VolunteerDashboard() {
             <div className="flex items-center justify-between gap-3 px-4 py-3">
                 <div>
                     <div className="text-lg font-semibold">Volunteer Dashboard</div>
-                    <div className="text-sm text-gray-300">
-                        Total score: {totalScore} • Time: {formatMMSS(elapsedSec)}
-                    </div>
+                    {/*
+                        <div className="text-sm text-gray-300">
+                            Total score: {totalScore} • Time: {formatMMSS(elapsedSec)}
+                        </div>
+                    */}
+
                     <div className="text-xs text-gray-500">
                         Unlocks: +1 at 02:00, +1 at 04:00 • Active: {volunteers.length}/7
                     </div>

@@ -1,18 +1,16 @@
-// volunteers.ts
+
 
 export type VolunteerStatus =
     | "available"
     | "out_volunteering"
     | "resting"
     | "unavailable"
-    | "at_uni_work";
 
 export const VOLUNTEER_STATUS_LABEL: Record<VolunteerStatus, string> = {
     available: "Available",
     out_volunteering: "Out volunteering",
     resting: "Resting",
     unavailable: "Unavailable",
-    at_uni_work: "At uni/work",
 };
 
 export const COURSE_ACRONYMS = {
@@ -45,6 +43,10 @@ export const COURSE_ACRONYMS = {
 
 export type Course = keyof typeof COURSE_ACRONYMS;
 
+
+// Immediately Invoked Function Expression (IIFE)
+// Runs once when the file is loaded
+// Ensures that no two courses share the same acronym.
 (function validateUniqueAcronyms() {
     const values = Object.values(COURSE_ACRONYMS);
     const unique = new Set(values);
@@ -63,6 +65,8 @@ export type Volunteer = {
     status: VolunteerStatus;
 
     level_of_experience: number; // 0..10
+
+    exchanges_completed: number;
 
     course: Course;
     languages?: string[];
@@ -174,10 +178,22 @@ export const COURSE_INTERESTS: Record<Course, string[]> = {
     "Design": ["Creative workshops", "UI support", "Poster design", "Campaign materials"],
 };
 
+
+
+/*
+    Returns one random element from an array
+    Used for:
+        - Picking random first names
+        - Picking random courses
+        - Picking interest
+*/
 function pickOne<T>(arr: readonly T[], rnd: () => number): T {
     return arr[Math.floor(rnd() * arr.length)];
 }
 
+
+// Returns multiple UNIQUE random elements from an array.
+// It never picks the same item twice by copying the array and removing items as they are selected.
 function pickManyUnique<T>(arr: readonly T[], count: number, rnd: () => number): T[] {
     const copy = [...arr];
     const out: T[] = [];
@@ -192,15 +208,23 @@ function pickManyUnique<T>(arr: readonly T[], count: number, rnd: () => number):
     return out;
 }
 
+// Restricts a number to stay within a minimum and maximum range
+// e.g. clamp(15, 0, 10) -> 10, clamp(-2, 0, 10) -> 0
 function clamp(n: number, min: number, max: number) {
     return Math.max(min, Math.min(max, n));
 }
 
+
+// Generates a dynamic headline for a volunteer based on their course and a random interest
+// e.g. "Computer Science student - Tech mentoring"
 function makeHeadline(course: Course, rnd: () => number): string {
     const interest = pickOne(COURSE_INTERESTS[course], rnd);
     return `${course} student • ${interest}`;
 }
 
+
+// A seeded pseudo-random number generator?
+// Math.random() changes every run but mulberry32(seed) produces predictable randomness.
 export function mulberry32(seed: number) {
     return function () {
         let t = (seed += 0x6d2b79f5);
@@ -209,6 +233,7 @@ export function mulberry32(seed: number) {
         return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
 }
+
 
 export const FIXED_VOLUNTEER: Volunteer = {
     id: 2350831597978,
@@ -221,8 +246,26 @@ export const FIXED_VOLUNTEER: Volunteer = {
     languages: ["English"],
     tags: [],
     photoUrl: "",
+    exchanges_completed: 0,
 };
 
+/*
+
+Generates one random volunteer
+
+- index: used to help generate a unique ID
+- rnd: random function (can be seeded)
+- reservedNames: prevents duplicate names (e.g., fixed volunteer)
+
+- Generates a unique name
+- Sets status to "available"
+- Randomises age (18–30)
+- Randomises experience (0–10)
+- Picks a random course
+- Generates headline
+- Assigns random languages
+- Assigns random tags
+*/
 export function makeRandomVolunteer(
     index: number,
     rnd: () => number = Math.random,
@@ -270,8 +313,19 @@ export function makeRandomVolunteer(
         languages,
         tags,
         photoUrl: "",
+        exchanges_completed: 0,
     };
 }
+
+/*
+Generates a full list of volunteers.
+
+- count: total number of volunteers
+- seed (optional): makes the list deterministic
+
+- Always includes FIXED_VOLUNTEER as the first element.
+- Then generates (count - 1) random volunteers.
+*/
 
 export function makeVolunteerList(count: number, seed?: number): Volunteer[] {
     const rnd = typeof seed === "number" ? mulberry32(seed) : Math.random;

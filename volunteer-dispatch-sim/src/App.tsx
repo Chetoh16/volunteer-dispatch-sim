@@ -8,6 +8,7 @@ import StartScreen from './components/StartScreen';
 import { calculateScore } from './data/score';
 import { opportunities, type Opportunity } from './data/opportunities';
 import OpportunityCard from './components/OpportunityCard';
+import VolunteerDashboard from './components/VolunteerDashboard';
 
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
@@ -143,11 +144,22 @@ function App() {
       <br/><br/>
     </div>
 
-    <div className="w-screen h-screen flex flex-col">
-      <div className="flex-1">
-        <Map countries={countries} setCountries={setCountries} onCountryClick={handleCountryClicks} />
-        
+    <div className="w-screen h-screen flex flex-col overflow-hidden">
+
+      {/* Map takes remaining vertical space */}
+      <div className="flex-1 relative">
+        <Map
+          countries={countries}
+          setCountries={setCountries}
+          onCountryClick={handleCountryClicks}
+        />
       </div>
+
+      {/* Volunteer dashboard pinned at bottom like Dispatch */}
+      <div className="h-[200px] border-t border-black/40">
+        <VolunteerDashboard />
+      </div>
+
     </div>
 
     {activeOpportunity && (

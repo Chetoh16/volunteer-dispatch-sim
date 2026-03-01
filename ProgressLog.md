@@ -31,3 +31,7 @@ TO DO
 - levels correspond to difficulty -> base point bonus
 - Punish sending high level volunteers to low difficulty opportunities
 - sfx & looping music
+- volunteerdashboard hover / toggle
+- 50+ age?
+- remove fixed volunteer
+- REMOVE TIMER FROM VOLUNTEER MAKE IT USE THE CENTRALISED ONE

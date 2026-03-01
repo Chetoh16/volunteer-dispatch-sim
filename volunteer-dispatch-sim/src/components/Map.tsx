@@ -30,7 +30,7 @@ const Map: React.FC<MapProps> = ({ countries, setCountries, onCountryClick }) =>
         </div>
         )}
 
-      <ComposableMap width={1050} height={500} style={{ width: "100%", height: "auto" }}>
+      <ComposableMap width={1200} height={500} style={{ width: "100%", height: "auto" }}>
         <Geographies geography={geoUrl}>
           {({ geographies }) => 
             geographies.map((geo) => {

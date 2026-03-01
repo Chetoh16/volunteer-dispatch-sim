@@ -5,7 +5,6 @@ import {
     COURSE_ACRONYMS,
     VOLUNTEER_STATUS_LABEL,
     makeVolunteerList,
-    scoreForExchange,
     type Volunteer,
     type VolunteerStatus,
 } from "../data/volunteers";
@@ -13,13 +12,13 @@ type VolunteerCardProps = {
     volunteer: Volunteer;
 
     // Thumbs-up bubble: parent updates level_of_experience by +1
-    onThumbsUp: (volunteerId: string) => void;
+    onThumbsUp: (volunteerId: number) => void;
 
     // Right click to open profile (parent decides modal/route/panel)
-    onOpenProfile?: (volunteerId: string) => void;
+    onOpenProfile?: (volunteerId: number) => void;
 
     // Optional left-click select
-    onSelect?: (volunteerId: string) => void;
+    onSelect?: (volunteerId: number) => void;
 };
 
 function statusClass(status: VolunteerStatus) {
@@ -32,8 +31,6 @@ function statusClass(status: VolunteerStatus) {
             return "bg-purple-100 text-purple-900";
         case "unavailable":
             return "bg-gray-200 text-gray-800";
-        case "at_uni_work":
-            return "bg-amber-100 text-amber-900";
     }
 }
 
@@ -78,19 +75,22 @@ export function VolunteerCard({ volunteer, onThumbsUp, onOpenProfile, onSelect }
                     </span>
                 </div>
 
-                <button
-                    type="button"
-                    className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[11px] font-semibold text-gray-900 shadow-sm ring-1 ring-black/5"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onThumbsUp(volunteer.id);
-                    }}
-                    aria-label="Increase experience by 1"
-                    title="Thumbs up (+1 experience)"
-                >
-                    <span aria-hidden>👍</span>
-                    <span>{volunteer.level_of_experience}</span>
-                </button>
+                {/* button to increase experience
+                    <button
+                        type="button"
+                        className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[11px] font-semibold text-gray-900 shadow-sm ring-1 ring-black/5"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onThumbsUp(volunteer.id);
+                        }}
+                        aria-label="Increase experience by 1"
+                        title="Thumbs up (+1 experience)"
+                    >
+                        <span aria-hidden>👍</span>
+                        <span>{volunteer.level_of_experience}</span>
+                    </button>
+                */}
+
 
                 <div className="absolute bottom-2 left-2">
                     <span className="rounded-md bg-black/70 px-2 py-1 text-[11px] font-bold tracking-wide text-white">
