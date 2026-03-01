@@ -103,6 +103,7 @@ function App() {
 
   // ---------  Render ---------
 
+function App() {
   return (
     <>
     <div>
