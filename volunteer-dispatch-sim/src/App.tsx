@@ -39,6 +39,35 @@ function App() {
   const [score, setScore] = useState(0);
 
 
+  const handleAssignVolunteer = (volunteerId: number) => {
+    if (!activeOpportunity) return;
+
+    // Pass volunteer name from dashboard
+    const volunteerName = "Volunteer"; // fallback name
+
+    setAssignments(prev => [
+      ...prev,
+      {
+        opportunityId: activeOpportunity.id,
+        volunteerId,
+        volunteerName,
+      }
+    ]);
+
+    // Mark country as active
+    setCountries(prev =>
+      prev.map(c =>
+        c.iso === activeOpportunity.countryIso
+          ? { ...c, status: "active" }
+          : c
+      )
+    );
+
+    setIsSelectingVolunteer(false);
+    setSelectedVolunteerId(null);
+    setActiveOpportunity(null);
+  };
+
 
   const handleCountryClicks = (iso: string) => {
     const opportunity = opportunities.find(o => o.countryIso === iso);
@@ -165,7 +194,12 @@ function App() {
 
       {/* Volunteer dashboard pinned at bottom like Dispatch */}
       <div className="h-[200px] border-t border-black/40">
-        <VolunteerDashboard />
+        <VolunteerDashboard
+          isSelecting={isSelectingVolunteer}
+          selectedVolunteerId={selectedVolunteerId}
+          onSelectVolunteer={(id) => setSelectedVolunteerId(id)}
+          onAssignVolunteer={(id) => handleAssignVolunteer(id)}
+        />
       </div>
 
     </div>
