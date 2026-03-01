@@ -78,15 +78,6 @@ function ProfileModal({ volunteer, onClose, onThumbsUp, onCompleteExchange }: Pr
                         <div className="text-xs text-gray-300">Experience</div>
                         <div className="mt-1 flex items-center justify-between">
                             <div className="font-semibold">{volunteer.level_of_experience}</div>
-                            {/* button to increase experience
-                                <button
-                                    type="button"
-                                    className="rounded-lg bg-white/10 px-3 py-1 text-sm hover:bg-white/15"
-                                    onClick={() => onThumbsUp(volunteer.id)}
-                                >
-                                    👍 +1
-                                </button>
-                            */}
 
                         </div>
                     </div>
@@ -95,30 +86,9 @@ function ProfileModal({ volunteer, onClose, onThumbsUp, onCompleteExchange }: Pr
                         <div className="text-xs text-gray-300">Exchanges completed</div>
                         <div className="mt-1 font-semibold">{volunteer.exchanges_completed}</div>
                     </div>
-                    
-                    {/*
-                        <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-                            <div className="text-xs text-gray-300">Volunteer score</div>
-                            <div className="mt-1 font-semibold">{volunteer.score}</div>
-                        </div>
-                    */}
+            
 
                 </div>
-
-                {/* “Complete exchange” action button.
-                    In practice: simulates finishing an exchange; awards points based on current experience.
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                    <button
-                        type="button"
-                        className="rounded-lg bg-emerald-600/90 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-600"
-                        onClick={() => onCompleteExchange(volunteer.id)}
-                    >
-                        
-                    </button>
-                </div>
-
-                */}
 
             </div>
         </div>

@@ -32,7 +32,8 @@ TO DO
 - Punish sending high level volunteers to low difficulty opportunities
 - sfx & looping music
 - volunteerdashboard hover / toggle
-- 50+ age?
+- 50+ age? -> take longer + more points
 - remove fixed volunteer
 - Change experience : 6 to experience 6 years
 - DO NOT SHOW VOLUNTEERS AT START OF GAME
+- RESET VOLUNTEER

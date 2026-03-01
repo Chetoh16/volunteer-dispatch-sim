@@ -20,7 +20,7 @@ function App() {
 
   
   // 5 min timer: 5x30
-  const[time, setTime] = useState(300);
+  const[time, setTime] = useState(30);
 
   const [countries, setCountries] = useState<CountryState[]>([]);
 
