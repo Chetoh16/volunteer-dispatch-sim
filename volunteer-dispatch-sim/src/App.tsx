@@ -42,19 +42,15 @@ function App() {
   const handleAssignVolunteer = (volunteerId: number) => {
     if (!activeOpportunity) return;
 
-    // Pass volunteer name from dashboard
-    const volunteerName = "Volunteer"; // fallback name
-
     setAssignments(prev => [
       ...prev,
       {
         opportunityId: activeOpportunity.id,
         volunteerId,
-        volunteerName,
+        volunteerName: `Volunteer #${volunteerId}`, // temp until we pass real name
       }
     ]);
 
-    // Mark country as active
     setCountries(prev =>
       prev.map(c =>
         c.iso === activeOpportunity.countryIso
@@ -65,7 +61,6 @@ function App() {
 
     setIsSelectingVolunteer(false);
     setSelectedVolunteerId(null);
-    setActiveOpportunity(null);
   };
 
 
@@ -183,7 +178,7 @@ function App() {
 
     <div className="w-screen h-screen flex flex-col overflow-hidden">
 
-      {/* Map takes remaining vertical space */}
+      {/* Map */}
       <div className="flex-1 relative">
         <Map
           countries={countries}
@@ -192,8 +187,26 @@ function App() {
         />
       </div>
 
-      {/* Volunteer dashboard pinned at bottom like Dispatch */}
-      <div className="h-[200px] border-t border-black/40">
+      {/* Opportunity Panel */}
+      {activeOpportunity && (
+        <div className="opportunity-panel">
+          <OpportunityCard
+            {...activeOpportunity}
+            onClose={() => {
+              setIsSelectingVolunteer(false);
+              setSelectedVolunteerId(null);
+              setActiveOpportunity(null);
+            }}
+            onStartSelecting={() => setIsSelectingVolunteer(true)}
+            assignedVolunteerName={
+              assignments.find(a => a.opportunityId === activeOpportunity.id)?.volunteerName
+            }
+          />
+        </div>
+      )}
+
+      {/* Dashboard */}
+      <div className="h-[200px] border-t border-black/40 relative z-10">
         <VolunteerDashboard
           isSelecting={isSelectingVolunteer}
           selectedVolunteerId={selectedVolunteerId}
@@ -204,23 +217,7 @@ function App() {
 
     </div>
 
-    {activeOpportunity && (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <OpportunityCard
-          {...activeOpportunity}
-          onClose={() => {
-            setIsSelectingVolunteer(false);
-            setSelectedVolunteerId(null);
-            setActiveOpportunity(null);
-          }}
-          onStartSelecting={() => setIsSelectingVolunteer(true)}
-          assignedVolunteerName={
-            assignments.find(a => a.opportunityId === activeOpportunity.id)?.volunteerName
-          }
-        />
-        
-      </div>
-    )}
+
 
     {/* Render Start Screen */}
     {!gameStarted && <StartScreen onStart={() => setGameStarted(true)} />}

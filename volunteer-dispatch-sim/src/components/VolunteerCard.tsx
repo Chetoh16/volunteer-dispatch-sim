@@ -68,6 +68,8 @@ export function VolunteerCard({
             onClick={() => {
                 if (isSelecting) {
                     onSelectVolunteer?.(volunteer.id);
+                } else {
+                    onOpenProfile?.(volunteer.id);
                 }
             }}
             onContextMenu={(e) => {
