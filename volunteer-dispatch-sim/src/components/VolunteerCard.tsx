@@ -115,7 +115,7 @@ export function VolunteerCard({
 
                 {/* COURSE ACRONYM */}
                 <div className="absolute bottom-2 left-2">
-                    <span className="rounded-md bg-black/70 px-2 py-1 text-[11px] font-bold tracking-wide text-white">
+                    <span className="rounded-md bg-red-600/70 px-2 py-1 text-[11px] font-bold tracking-wide text-white">
                         {acronym}
                     </span>
                 </div>

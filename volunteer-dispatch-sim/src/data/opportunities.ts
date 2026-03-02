@@ -9,8 +9,7 @@ export interface Opportunity  {
     description : string,
     sdg : string,
     difficulty: 1 | 2 | 3;  // Only allows 1, 2, or 3
-    duration : number,
-    type: string;
+    type: OpportunityType;
     requirements: {
         age: string;
         language: string[];
