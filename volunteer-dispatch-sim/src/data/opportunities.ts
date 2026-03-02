@@ -1,3 +1,6 @@
+
+export type OpportunityType = "Environment" | "Education" | "Health" | "Social Work";
+
 export interface Opportunity  {
     id : number,
     countryIso: string; // link map to country
@@ -6,6 +9,7 @@ export interface Opportunity  {
     description : string,
     sdg : string,
     difficulty: 1 | 2 | 3;  // Only allows 1, 2, or 3
+    duration : number,
     type: string;
     requirements: {
         age: string;

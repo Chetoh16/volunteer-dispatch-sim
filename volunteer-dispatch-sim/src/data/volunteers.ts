@@ -1,5 +1,3 @@
-
-
 export type VolunteerStatus =
     | "available"
     | "out_volunteering"
@@ -139,7 +137,7 @@ export const VOLUNTEER_POOL = {
     ],
 
     courses: Object.keys(COURSE_ACRONYMS) as Course[],
-    languages: ["English", "Spanish", "French", "German", "Italian"],
+    languages: ["English", "Spanish", "French", "German", "Italian", "Arabic", "Farsi", "Japanese"],
     tags: [
         "Driving Licence",
         "First Aid",
@@ -150,35 +148,182 @@ export const VOLUNTEER_POOL = {
     ],
 };
 
-export const COURSE_INTERESTS: Record<Course, string[]> = {
-    "Computer Science": ["Software volunteering", "Web development", "Data support", "Tech mentoring"],
-    "Arts": ["Community outreach", "Creative workshops", "Youth engagement", "Fundraising design"],
-    "Business Management": ["Event coordination", "Partnerships", "Operations support", "Team leadership"],
-    "Mechanical Engineering": ["Sustainability", "Prototyping help", "STEM outreach", "Logistics support"],
-    "Medicine": ["Public health volunteering", "Health education", "Community care support", "Wellbeing outreach"],
-    "Psychology": ["Mental health advocacy", "Peer support", "Wellbeing workshops", "Listening support"],
-    "Law": ["Human rights awareness", "Legal clinic support", "Policy research", "Civic education"],
-    "International Relations": ["Cultural exchange", "NGO support", "Community liaison", "Project coordination"],
-    "Education": ["Literacy support", "Tutoring", "Youth coaching", "Classroom support"],
-    "Environmental Science": ["Climate action", "Recycling campaigns", "Community clean-ups", "Sustainability outreach"],
-    "Economics": ["Social impact research", "Data collection", "Grant support", "Community surveys"],
-    "Nursing": ["Community care", "Patient support", "Health outreach", "Wellbeing assistance"],
-    "Marketing": ["Campaign coordination", "Social media", "Content planning", "Outreach promotion"],
-    "Architecture": ["Urban regeneration", "Community planning", "Design support", "Accessibility projects"],
-    "Biology": ["Conservation projects", "Biodiversity surveys", "Education outreach", "Lab support"],
-    "History": ["Heritage preservation", "Museum support", "Archive organisation", "Guided tours support"],
-    "Sociology": ["Inclusion initiatives", "Community research", "Youth programmes", "Social outreach"],
-    "Mathematics": ["STEM tutoring", "Data support", "Workshop facilitation", "Problem-solving mentoring"],
-    "Physics": ["Science outreach", "STEM demos", "Tech support", "Workshop assistance"],
-    "Politics": ["Civic engagement", "Community organising", "Policy outreach", "Campaign volunteering"],
-    "Media Studies": ["Digital storytelling", "Video editing", "Content creation", "Campaign media"],
-    "Philosophy": ["Ethics workshops", "Debate facilitation", "Mentoring", "Community dialogue"],
-    "Sports Science": ["Youth coaching", "Sports sessions", "Wellbeing activities", "Team facilitation"],
-    "Geography": ["Development studies", "Mapping support", "Fieldwork help", "Community projects"],
-    "Design": ["Creative workshops", "UI support", "Poster design", "Campaign materials"],
+export const CURRENT_TITLES: Record<Course, string[]> = {
+    "Computer Science": [
+        "Lamba's Company Intern",
+        "Freelance Web Developer",
+        "Coding Tutor",
+        "Junior IT Support",
+    ],
+
+    "Arts": [
+        "Gallery Assistant",
+        "Freelance Illustrator",
+        "Community Arts Facilitator",
+        "Creative Workshop Assistant",
+    ],
+
+    "Business Management": [
+        "Startup Intern",
+        "Retail Supervisor",
+        "Operations Assistant",
+        "Business Analyst Intern",
+    ],
+
+    "Mechanical Engineering": [
+        "Workshop Technician",
+        "CAD Intern",
+        "STEM Outreach Assistant",
+        "Manufacturing Intern",
+    ],
+
+    "Medicine": [
+        "Hospital Volunteer",
+        "Medical Receptionist",
+        "Care Assistant",
+        "Clinical Placement Student",
+    ],
+
+    "Psychology": [
+        "Mental Health Support Volunteer",
+        "Behavioural Research Assistant",
+        "Peer Support Mentor",
+        "Care Worker",
+    ],
+
+    "Law": [
+        "Legal Intern",
+        "Paralegal Assistant",
+        "Legal Clinic Volunteer",
+        "Compliance Assistant",
+    ],
+
+    "International Relations": [
+        "NGO Intern",
+        "Community Liaison Volunteer",
+        "Policy Research Assistant",
+        "Cultural Exchange Coordinator",
+    ],
+
+    "Education": [
+        "GCSE Maths Tutor",
+        "Teaching Assistant",
+        "After-school Tutor",
+        "Classroom Support Assistant",
+    ],
+
+    "Environmental Science": [
+        "Sustainability Intern",
+        "Recycling Programme Volunteer",
+        "Environmental Survey Assistant",
+        "Conservation Volunteer",
+    ],
+
+    "Economics": [
+        "Data Analyst Intern",
+        "Research Assistant",
+        "Finance Intern",
+        "Market Research Assistant",
+    ],
+
+    "Nursing": [
+        "Healthcare Assistant",
+        "Care Home Worker",
+        "Community Health Volunteer",
+        "Patient Support Worker",
+    ],
+
+    "Marketing": [
+        "Social Media Manager",
+        "Marketing Intern",
+        "Content Creator",
+        "Y's & Z's Brand Ambassador",
+    ],
+
+    "Architecture": [
+        "Architectural Assistant",
+        "CAD Enthusiast",
+        "Design Studio Intern",
+        "Urban Planning Intern",
+    ],
+
+    "Biology": [
+        "Lab Assistant",
+        "Research Intern",
+        "Wildlife Conservation Volunteer",
+        "Science Outreach Assistant",
+    ],
+
+    "History": [
+        "Museum Guide",
+        "Archive Assistant",
+        "Heritage Site Volunteer",
+        "Research Assistant",
+    ],
+
+    "Sociology": [
+        "Community Outreach Worker",
+        "Social Research Assistant",
+        "Youth Programme Volunteer",
+        "Community Project Intern",
+    ],
+
+    "Mathematics": [
+        "GCSE Maths Tutor",
+        "Statistics Assistant",
+        "Data Analyst Intern",
+        "STEM Tutor",
+    ],
+
+    "Physics": [
+        "Laboratory Assistant",
+        "Science Demonstrator",
+        "Research Intern",
+        "GCSE Physics Tutor",
+    ],
+
+    "Politics": [
+        "Policy Intern",
+        "Campaign Assistant",
+        "Civic Engagement Volunteer",
+        "Research Assistant",
+    ],
+
+    "Media Studies": [
+        "Freelance Video Editor",
+        "Content Creator",
+        "Podcast Producer",
+        "Social Media Editor",
+    ],
+
+    "Philosophy": [
+        "Debate Club Facilitator",
+        "Ethics Research Assistant",
+        "Academic Tutor",
+        "Editorial Assistant",
+    ],
+
+    "Sports Science": [
+        "Fitness Coach",
+        "Sports Club Trainer",
+        "Youth Sports Instructor",
+        "Gym Assistant",
+    ],
+
+    "Geography": [
+        "Field Survey Assistant",
+        "GIS Intern",
+        "Mapping Assistant",
+        "Environmental Fieldworker",
+    ],
+
+    "Design": [
+        "Freelance Graphic Designer",
+        "UI Design Intern",
+        "Poster Designer",
+        "Creative Studio Assistant",
+    ],
 };
-
-
 
 /*
     Returns one random element from an array
@@ -215,11 +360,11 @@ function clamp(n: number, min: number, max: number) {
 }
 
 
-// Generates a dynamic headline for a volunteer based on their course and a random interest
+// Generates a dynamic headline for a volunteer based on their course and a random Title
 // e.g. "Computer Science student - Tech mentoring"
 function makeHeadline(course: Course, rnd: () => number): string {
-    const interest = pickOne(COURSE_INTERESTS[course], rnd);
-    return `${course} student • ${interest}`;
+    const title = pickOne(CURRENT_TITLES[course], rnd);
+    return `${title} • ${course} student`;
 }
 
 
@@ -239,7 +384,7 @@ export const FIXED_VOLUNTEER: Volunteer = {
     id: 2350831597978,
     name: "Dylan",
     age: 27,
-    headline: "MASTERS Computer Science • Questionable Ethics Expert",
+    headline: "Masters in Computer Science • C",
     status: "available",
     level_of_experience: 1,
     course: "Computer Science",
@@ -281,20 +426,41 @@ export function makeRandomVolunteer(
         attempts++;
     } while (reservedNames.has(name) && attempts < 20);
 
-    // All volunteers start available
+    // All volunteers start available!!!
     const status: VolunteerStatus = "available";
 
+    // Age Random + Level
     const age = Math.floor(rnd() * (30 - 18 + 1)) + 18;
     const level_of_experience = clamp(Math.round(rnd() * 10), 0, 10);
+
 
     const course = pickOne(VOLUNTEER_POOL.courses, rnd);
     const headline = makeHeadline(course, rnd);
 
-    const languages = pickManyUnique(
-        VOLUNTEER_POOL.languages,
-        1 + Math.floor(rnd() * 3),
-        rnd
-    );
+    const baseLanguages = VOLUNTEER_POOL.languages;
+
+    // LANGUAGE RANDOMISER!!!
+// 70%: includes English + 0..2 more
+// 30%: does NOT include English, starts with a non-English language + 0..2 more
+    const includeEnglish = rnd() < 0.7;
+
+    let languages: string[];
+
+    if (includeEnglish) {
+        const extras = pickManyUnique(
+            baseLanguages.filter(l => l !== "English"),
+            Math.floor(rnd() * 3), // 0..2 extra
+            rnd
+        );
+        languages = ["English", ...extras];
+    } else {
+        const count = 1 + Math.floor(rnd() * 3); // 1..3 languages, none are English guaranteed
+        languages = pickManyUnique(
+            baseLanguages.filter(l => l !== "English"),
+            count,
+            rnd
+        );
+    }
 
     const tags = pickManyUnique(
         VOLUNTEER_POOL.tags,
