@@ -1,21 +1,25 @@
 # volunteer-dispatch-sim
-In the game, you play as a dispatcher managing international volunteering opportunities.
-A world map is displayed, and countries turn red to signal that a new opportunity has become available. 
-You can choose to ignore it or assign an available volunteer to respond.
+In this game, you step into the role of an Exchange Manager:
+- Assigning volunteers to opportunities
+- Managing time and volunteers.
+- Developing volunteer experience levels
+- Maximising successful exchanges
 
-The aim of the game is to raise awareness about locations where volunteering opportunities
-exist and the types of skills and expectations associated with participating in them.
+The idea of the game is to educate & inspire individuals to go on volunteering on the opportunities available. 
+With this, they can aim to make a change in the world while gaining a little something to help their career or experience a cultural exchange while doing a good deed!
 
 ---
 
-If you would like to have a look at some little notes we had while making this, 
-you may have a look at our ProgressLog.MD - It's nothing special, but it does exist!
-(and needs a lot of editing first)
+We're volunteer members (Exchange Managers) of AIESEC UK in various local committees and we wanted to develop a game where we can show off what kind of things someone from our line of work would do.
+AIESEC's goal is to send interested volunteers all over the world and create cross-cultural exchange experiences that develop leadership in young people.
 
-This game does take inspiration from volunteering opportunities around the world; most notably AIESEC
-a big non-profit organisation with the aim of sending individuals abroad to assist a cause via a company
-while learning new skills or improving current ones!
+As Exchange Managers, our role involves matching volunteers to international opportunities, supporting them through the preparation process, handling documentation, communicating with partner countries,
+and solving unexpected challenges along the way. It’s fast-paced, people-focused, and requires balancing multiple cases at once.
 
+We realised that many people don’t fully understand what happens behind the scenes of an exchange. So we decided to turn our day-to-day responsibilities into a simulation game by allowing players to
+experience the pressure, decision-making, and strategy involved in managing volunteers.
+
+This project is not affiliated with or endorsed by AIESEC. It is independently created and inspired by our personal experiences as volunteers.
 
 ## How to Setup & Run
 * Pull latest changes
