@@ -128,7 +128,7 @@ export default function VolunteerDashboard({
         // If volunteer was assigned and returning, increment experience
         const wasAssigned = !prev.find(pv => pv.id === v.id);
         return wasAssigned
-            ? { ...v, level_of_experience: Math.min(10, v.level_of_experience + 1) }
+            ? { ...v, level_of_experience: Math.min(10, v.level_of_experience + 1), exchanges_completed: v.exchanges_completed + 1 }
             : v;
         });
         return updatedVolunteers;
