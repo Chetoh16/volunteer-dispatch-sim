@@ -32,10 +32,10 @@ There's also a website available!
 * https://govolunteer.netlify.app
 
 ## Technologies Used
-* React
-* Vite
-* TypeScript
-* TailWind (CSS Framework)
+* React 18.2.14
+* Vite 7.3.1
+* TypeScript 5.9.3
+* TailWind (CSS Framework) 3.4.4
 
 <img width="1920" height="885" alt="image" src="https://github.com/user-attachments/assets/8f014b64-d688-4381-bf80-35c3a0bd1b02" />
 
