@@ -1,10 +1,9 @@
 type EndScreenProps = {
-  time: number;
   score: number;
   onPlayAgain: () => void;
 };
 
-const EndScreen = ({ time, score, onPlayAgain }: EndScreenProps) => {
+const EndScreen = ({score, onPlayAgain }: EndScreenProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center
                     bg-black/40 backdrop-blur-md">
@@ -15,10 +14,6 @@ const EndScreen = ({ time, score, onPlayAgain }: EndScreenProps) => {
         <h1 className="text-4xl font-bold mb-6 text-gray-800">
           Game Over
         </h1>
-
-        <div className="text-lg text-gray-600 mb-4">
-          Time: {time}
-        </div>
 
         <div className="text-lg text-gray-600 mb-8">
           Score: {score}

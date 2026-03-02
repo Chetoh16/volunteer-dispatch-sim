@@ -1,5 +1,5 @@
 import type { Volunteer, Course } from "./volunteers";
-import type { Opportunity } from "./opportunities";
+import type { OpportunityType, Opportunity } from "./opportunities";
 
 // Output
 export interface ScoreBreakdown{

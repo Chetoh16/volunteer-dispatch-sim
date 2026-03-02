@@ -1,5 +1,5 @@
 
-export type OpportunityType = "Environment" | "Education" | "Health" | "Social Work";
+export type OpportunityType = "Environment" | "Education" | "Health" | "SocialWork";
 
 export interface Opportunity  {
     id : number,
@@ -44,7 +44,7 @@ export const opportunities: Opportunity[] = [
         description: "Run workshops on human rights and diversity in local schools. Support initiatives that promote equality and fight discrimination.",
         sdg: "10 - Reduced Inequalities",
         difficulty: 2,  // Medium difficulty
-        type: "Social Work",
+        type: "SocialWork",
         requirements: {
             age: "18-30",
             language: ['English', 'Italian'],
@@ -76,7 +76,7 @@ export const opportunities: Opportunity[] = [
         description: "Help local communities develop eco-tourism initiatives. Support cultural preservation and sustainable economic growth.",
         sdg: "8 - Decent Work & Economic Growth",
         difficulty: 2,  // Medium difficulty
-        type: "Social Work",
+        type: "SocialWork",
         requirements: {
             age: "18-30",
             language: ['English', 'Spanish'],
@@ -204,7 +204,7 @@ export const opportunities: Opportunity[] = [
         description: "Work with refugee communities to provide educational and integration support. Help with language classes, children's activities, and community building.",
         sdg: "10 - Reduced Inequalities",
         difficulty: 3,  // Hard difficulty
-        type: "Social Work",
+        type: "SocialWork",
         requirements: {
             age: "18-30",
             language: ['English', 'Arabic', 'Farsi'],
@@ -252,7 +252,7 @@ export const opportunities: Opportunity[] = [
         description: "Provide companionship and support to elderly residents. Organize activities, help with daily tasks, and learn about Japanese culture and traditions.",
         sdg: "3 - Good Health & Well-being",
         difficulty: 1,  // Easy difficulty
-        type: "Social Work",
+        type: "SocialWork",
         requirements: {
             age: "18-30",
             language: ['English', 'Japanese'],

@@ -6,9 +6,13 @@ import EndScreen from './components/EndScreen';
 import type { CountryState } from './data/countries';
 import StartScreen from './components/StartScreen';
 import { calculateScore } from './data/score';
-import { opportunities, type Opportunity } from './data/opportunities';
 import OpportunityCard from './components/OpportunityCard';
 import VolunteerDashboard from './components/VolunteerDashboard';
+import type { Volunteer } from "./data/volunteers";  // only the type
+import { makeVolunteerList } from "./data/volunteers"; // runtime function
+import { opportunities } from './data/opportunities';  // runtime array
+import type { Opportunity } from './data/opportunities'; // type-only
+import ScoreBar from './components/ScoreBar';
 
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"; // link to world map with names
@@ -23,6 +27,8 @@ function App() {
   const[time, setTime] = useState(30);
 
   const [countries, setCountries] = useState<CountryState[]>([]);
+
+  const [volunteers, setVolunteers] = useState<Volunteer[]>(() => makeVolunteerList(10));
 
   const [activeOpportunity, setActiveOpportunity] = useState<Opportunity | null>(null);
 
@@ -73,6 +79,23 @@ function App() {
   const handleAssignVolunteer = (volunteerId: number, volunteerName: string) => {
     if (!activeOpportunity) return;
 
+    // Find the volunteer object from VolunteerDashboard (you may need to pass volunteers state)
+    const volunteer = volunteers.find(v => v.id === volunteerId);
+    if (!volunteer) return;
+
+    // Calculate bonuses
+    const interestMatches = volunteer.tags?.includes(activeOpportunity.type) ?? false;
+    const languageMatches = activeOpportunity.requirements.language.some(lang => volunteer.languages?.includes(lang) ?? false);
+    
+    const scoreBreakdown = calculateScore({
+        basePoints: activeOpportunity.difficulty * 10,  // Example base: difficulty * 10
+        interestMatches,
+        languageMatches,
+        timeTakenToAssign: 5, // replace with actual timing logic
+    });
+
+    setScore(prev => prev + scoreBreakdown.total);
+    
     setAssignments(prev => [
       ...prev,
       {
@@ -238,6 +261,12 @@ function App() {
       <br/><br/>
     </div>
 
+    {/* Top-left score bar */}
+    <div className="fixed top-2 left-2 z-[200] flex items-center space-x-2 bg-white/80 px-2 py-1 rounded shadow">
+      <span className="font-bold text-sm">Score: {score}</span>
+      <ScoreBar score={score} />
+    </div>
+    
     <div className="w-screen h-screen flex flex-col overflow-hidden">
 
       {/* Map */}
@@ -290,7 +319,6 @@ function App() {
     {/* Render End Screen */}
     {gameEnded && (
       <EndScreen
-        time={time}
         score={score}
         onPlayAgain={resetGame}
       />
