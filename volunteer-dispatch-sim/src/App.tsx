@@ -23,12 +23,12 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 function App() {
 
   
-  // 5 min timer: 5x30
-  const[time, setTime] = useState(30);
+  // Timer
+  const[time, setTime] = useState(180);
 
   const [countries, setCountries] = useState<CountryState[]>([]);
 
-  const [volunteers, setVolunteers] = useState<Volunteer[]>(() => makeVolunteerList(10));
+  const [volunteers, setVolunteers] = useState<Volunteer[]>(() => makeVolunteerList(7));
 
   const [activeOpportunity, setActiveOpportunity] = useState<Opportunity | null>(null);
 
@@ -53,7 +53,7 @@ function App() {
 
   const resetGame = () => {
     // Reset timer
-    setTime(300);
+    setTime(180);
 
     // Reset game flags
     setGameEnded(false);
@@ -79,32 +79,6 @@ function App() {
   const handleAssignVolunteer = (volunteerId: number, volunteerName: string) => {
     if (!activeOpportunity) return;
 
-    // Find the volunteer object from VolunteerDashboard (you may need to pass volunteers state)
-    const volunteer = volunteers.find(v => v.id === volunteerId);
-    if (!volunteer) return;
-
-    // Calculate bonuses
-    const interestMatches = volunteer.tags?.includes(activeOpportunity.type) ?? false;
-    const languageMatches = activeOpportunity.requirements.language.some(lang => volunteer.languages?.includes(lang) ?? false);
-    
-    const scoreBreakdown = calculateScore({
-        basePoints: activeOpportunity.difficulty * 10,  // Example base: difficulty * 10
-        interestMatches,
-        languageMatches,
-        timeTakenToAssign: 5, // replace with actual timing logic
-    });
-
-    setScore(prev => prev + scoreBreakdown.total);
-    
-    setAssignments(prev => [
-      ...prev,
-      {
-        opportunityId: activeOpportunity.id,
-        volunteerId,
-        volunteerName: volunteerName, // temp until we pass real name
-      }
-    ]);
-
     setCountries(prev =>
       prev.map(c =>
         c.iso === activeOpportunity.countryIso
@@ -112,6 +86,38 @@ function App() {
           : c
       )
     );
+
+    setAssignments(prev => [
+      ...prev,
+      {
+        opportunityId: activeOpportunity.id,
+        volunteerId,
+        volunteerName,
+      },
+    ]);
+
+    // Find the volunteer object from VolunteerDashboard (you may need to pass volunteers state)
+    const volunteer = volunteers.find(v => v.id === volunteerId);
+    if (!volunteer) return;
+
+    setVolunteers(prev =>
+      prev.map(v =>
+        v.id === volunteerId ? { ...v, status: "out_volunteering" } : v
+      )
+    );
+
+    // Calculate bonuses
+    const interestMatches = volunteer.tags?.includes(activeOpportunity.type) ?? false;
+    const languageMatches = activeOpportunity.requirements.language.some(lang => volunteer.languages?.includes(lang) ?? false);
+    
+    const scoreBreakdown = calculateScore({
+        basePoints: activeOpportunity.difficulty * 10,  
+        interestMatches,
+        languageMatches,
+        timeTakenToAssign: 5, // placeholder
+    });
+
+    setScore(prev => prev + scoreBreakdown.total);
 
     setIsSelectingVolunteer(false);
     setSelectedVolunteerId(null);
@@ -126,6 +132,7 @@ function App() {
 
     // After the opportunity duration, revert country & volunteer
     setTimeout(() => {
+      
       // Make country idle again
       setCountries(prev =>
         prev.map(c =>
@@ -136,7 +143,18 @@ function App() {
       );
 
       // Remove volunteer from assignments and add back to dashboard with +1 experience
-      setVolunteerResetKey(prev => prev + 1); // trigger dashboard reset
+      setVolunteers(prev =>
+        prev.map(v =>
+          v.id === volunteerId
+            ? {
+                ...v,
+                status: "available",
+                level_of_experience: Math.min(10, v.level_of_experience + 1),
+                exchanges_completed: v.exchanges_completed + 1
+              }
+            : v
+        )
+      );
       setAssignments(prev =>
         prev.filter(a => a.volunteerId !== volunteerId)
       );
@@ -305,6 +323,8 @@ function App() {
           onSelectVolunteer={(id) => setSelectedVolunteerId(id)}
           onAssignVolunteer={handleAssignVolunteer}
           resetKey={volunteerResetKey}
+          volunteers={volunteers}
+          setVolunteers={setVolunteers}
         />
       </div>
 

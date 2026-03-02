@@ -103,7 +103,10 @@ export default function VolunteerDashboard({
     selectedVolunteerId,
     onSelectVolunteer,
     onAssignVolunteer,
-    resetKey  
+    resetKey, 
+    onReturnVolunteer,
+    volunteers,
+    setVolunteers
 }: {
     time: number;
     isSelecting: boolean;
@@ -111,58 +114,67 @@ export default function VolunteerDashboard({
     onSelectVolunteer: (id: number) => void;
     onAssignVolunteer: (id: number, name:string) => void;
     resetKey: number;
+    onReturnVolunteer?: (id: number) => void;
+    volunteers: Volunteer[];
+    setVolunteers: React.Dispatch<React.SetStateAction<Volunteer[]>>;
 }) {
-    // Generates a pool of 7 volunteers ONCE for the session.
-    // In practice: you have 7 “possible” volunteers, but you start showing only 5.
-    // dependent on resetKey changing
-    const allVolunteers = useMemo(() => makeVolunteerList(7, 123), [resetKey]);
 
-    // The active volunteers currently visible in the dashboard (starts with 5).
-    const [volunteers, setVolunteers] = useState<Volunteer[]>(() => allVolunteers.slice(0, 5));
 
-    // Reset volunteers whenever resetKey changes
-    useEffect(() => {
-    setVolunteers(prev => {
-        // Keep existing volunteers
-        const updatedVolunteers = allVolunteers.slice(0, 5).map(v => {
-        // If volunteer was assigned and returning, increment experience
-        const wasAssigned = !prev.find(pv => pv.id === v.id);
-        return wasAssigned
-            ? { ...v, level_of_experience: Math.min(10, v.level_of_experience + 1), exchanges_completed: v.exchanges_completed + 1 }
-            : v;
-        });
-        return updatedVolunteers;
-    });
-    }, [allVolunteers, resetKey]);
+    // // When volunteer returns from assignment
+    // function returnVolunteer(volunteerId: number) {
+    //     setVolunteersMap(prev => {
+    //         const v = prev[volunteerId];
+    //         if (!v) return prev;
+    //         return {
+    //         ...prev,
+    //         [volunteerId]: {
+    //             ...v,
+    //             level_of_experience: Math.min(10, v.level_of_experience + 1),
+    //             exchanges_completed: v.exchanges_completed + 1, 
+    //             status: "available"
+    //         }
+    //         };
+    //     });
+
+    //     // Update roster if volunteer not already visible
+    //     setVolunteers(prev => {
+    //         if (prev.find(v => v.id === volunteerId)) return prev;
+    //         return [...prev, volunteersMap[volunteerId]];
+    //     });
+    //     // Notify App
+    //     if (onReturnVolunteer) onReturnVolunteer(volunteerId);
+    // }
 
     // Which volunteer profile is currently open in the modal, by ID.
     const [profileId, setProfileId] = useState<number | null>(null);
 
-    // “Gate” flags so each unlock happens only once.
-    // useRef stores a mutable value that does not trigger re-renders.
-    const unlocked2m = useRef(false);
-    const unlocked4m = useRef(false);
+    // // “Gate” flags so each unlock happens only once.
+    // // useRef stores a mutable value that does not trigger re-renders.
+    // const unlocked2m = useRef(false);
+    // const unlocked4m = useRef(false);
 
 
-    // Unlock logic:
-    // - at 120s (2 minutes), add volunteer #6
-    // - at 240s (4 minutes), add volunteer #7
-    // In practice: the roster grows over time to increase difficulty/choice.
-    useEffect(() => {
-        if (!unlocked2m.current && time <= 180) {
-            unlocked2m.current = true;
-            setVolunteers(prev =>
-                prev.length >= 6 ? prev : [...prev, allVolunteers[5]]
-            );
-        }
+    // // Unlock logic:
+    // // - at 120s (2 minutes), add volunteer #6
+    // // - at 240s (4 minutes), add volunteer #7
+    // // In practice: the roster grows over time to increase difficulty/choice.
+    // const allVolunteers = useMemo(() => Object.values(volunteersMap), [volunteersMap]);
 
-        if (!unlocked4m.current && time <= 60) {
-            unlocked4m.current = true;
-            setVolunteers(prev =>
-                prev.length >= 7 ? prev : [...prev, allVolunteers[6]]
-            );
-        }
-    }, [time, allVolunteers]);
+    // useEffect(() => {
+    //     if (!unlocked2m.current && time <= 180) {
+    //         unlocked2m.current = true;
+    //         setVolunteers(prev =>
+    //             prev.length >= 6 ? prev : [...prev, allVolunteers[5]]
+    //         );
+    //     }
+
+    //     if (!unlocked4m.current && time <= 60) {
+    //         unlocked4m.current = true;
+    //         setVolunteers(prev =>
+    //             prev.length >= 7 ? prev : [...prev, allVolunteers[6]]
+    //         );
+    //     }
+    // }, [time, allVolunteers]);
 
     // Handles clicking 👍 on a card. (for testing)
     // In practice: increases experience for that volunteer in state (clamped to 10).
@@ -206,7 +218,13 @@ export default function VolunteerDashboard({
         if (!volunteer) return;
 
         // Remove volunteer from local dashboard state
-        setVolunteers(prev => prev.filter(v => v.id !== id));
+        setVolunteers(prev =>
+        prev.map(v =>
+            v.id === id
+            ? { ...v, status: "out_volunteering" }
+            : v
+        )
+        );
 
         onAssignVolunteer(id, volunteer.name);
 
