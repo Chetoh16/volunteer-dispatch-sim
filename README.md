@@ -31,7 +31,7 @@ This project is not affiliated with or endorsed by AIESEC. It is independently c
 There's also a website available!
 * https://govolunteer.netlify.app
 
-## Dependencies List
+## Technologies Used
 * React
 * Vite
 * TypeScript
