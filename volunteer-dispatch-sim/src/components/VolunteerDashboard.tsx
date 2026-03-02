@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {  useState } from "react";
 import { VolunteerCard } from "./VolunteerCard";
 
 // Imports data + helper functions from data layer.
@@ -8,11 +8,8 @@ import { VolunteerCard } from "./VolunteerCard";
 // - scoreForExchange: scoring rule for completing an exchange
 // - Volunteer / VolunteerStatus: TypeScript types used for safety
 import {
-    COURSE_ACRONYMS,
     VOLUNTEER_STATUS_LABEL,
-    makeVolunteerList,
     type Volunteer,
-    type VolunteerStatus,
 } from "../data/volunteers";
 
 
@@ -29,7 +26,7 @@ type ProfileModalProps = {
 
 // Profile modal UI.
 // In practice: opened by right-clicking (or selecting) a card.
-function ProfileModal({ volunteer, onClose, onThumbsUp, onCompleteExchange }: ProfileModalProps) {
+function ProfileModal({ volunteer, onClose }: ProfileModalProps) {
     return (
         <div
             // Fullscreen overlay behind the modal.
@@ -98,13 +95,10 @@ function ProfileModal({ volunteer, onClose, onThumbsUp, onCompleteExchange }: Pr
 // Main screen component.
 // In practice: holds the game state (volunteers list, timer, modal open/close) and renders the UI.
 export default function VolunteerDashboard({
-    time,
     isSelecting,
     selectedVolunteerId,
     onSelectVolunteer,
     onAssignVolunteer,
-    resetKey, 
-    onReturnVolunteer,
     volunteers,
     setVolunteers
 }: {
