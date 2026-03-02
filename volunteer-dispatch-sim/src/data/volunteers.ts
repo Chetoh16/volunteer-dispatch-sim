@@ -390,7 +390,7 @@ export const FIXED_VOLUNTEER: Volunteer = {
     course: "Computer Science",
     languages: ["English"],
     tags: [],
-    photoUrl: "/public/volunteer-img.png",
+    photoUrl: "/volunteer-img.png",
     exchanges_completed: 0,
 };
 
