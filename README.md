@@ -1,4 +1,4 @@
-# volunteer-dispatch-sim
+# Go Volunteer (Volunteer-Dispatch-Simulator)
 In this game, you step into the role of an Exchange Manager:
 - Assigning volunteers to opportunities
 - Managing time and volunteers.
