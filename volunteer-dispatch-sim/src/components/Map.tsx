@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import type { CountryState } from "../data/countries";
-import { useEffect } from "react";
+
 
 import { ComposableMap, Geographies, Geography} from "react-simple-maps";
 
@@ -18,7 +18,7 @@ interface MapProps {
     onCountryClick: (iso: string) => void;
 }
 
-const Map: React.FC<MapProps> = ({ countries, setCountries, onCountryClick }) => {
+const Map: React.FC<MapProps> = ({ countries, onCountryClick }) => {
     const [tooltipContent, setTooltipContent] = useState<string>("");
 
     // Render

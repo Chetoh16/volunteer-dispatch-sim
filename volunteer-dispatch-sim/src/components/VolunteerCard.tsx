@@ -1,10 +1,8 @@
 // VolunteerCard.tsx
 
-import { useMemo, useState } from "react";
 import {
     COURSE_ACRONYMS,
     VOLUNTEER_STATUS_LABEL,
-    makeVolunteerList,
     type Volunteer,
     type VolunteerStatus,
 } from "../data/volunteers";
@@ -47,7 +45,6 @@ function statusClass(status: VolunteerStatus) {
 
 export function VolunteerCard({
     volunteer,
-    onThumbsUp,
     onOpenProfile,
     isSelecting = false,
     isSelected = false,

@@ -25,7 +25,6 @@ interface OpportunityCardInfo {
 }
 
 const OpportunityCard: React.FC<OpportunityCardInfo> = ({ 
-    id,
     name,
     location,
     description,
