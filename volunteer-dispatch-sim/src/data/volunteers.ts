@@ -478,7 +478,7 @@ export function makeRandomVolunteer(
         course,
         languages,
         tags,
-        photoUrl: "/public/volunteer-img.png",
+        photoUrl: "/volunteer-img.png",
         exchanges_completed: 0,
     };
 }
