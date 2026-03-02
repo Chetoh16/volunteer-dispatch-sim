@@ -1,7 +1,7 @@
 # volunteer-dispatch-sim
-In the game, you play as a dispatcher. You see a world map where countries turn red 
-to signal that a volunteering opportunity is available. You may either ignore it
-or send a volunteer to assist with the cause.
+In the game, you play as a dispatcher managing international volunteering opportunities.
+A world map is displayed, and countries turn red to signal that a new opportunity has become available. 
+You can choose to ignore it or assign an available volunteer to respond.
 
 The aim of the game is to raise awareness about locations where volunteering opportunities
 exist and the types of skills and expectations associated with participating in them.
