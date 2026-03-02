@@ -34,9 +34,12 @@ function App() {
 
   const [selectedVolunteerId, setSelectedVolunteerId] = useState<number | null>(null);
 
+  const [volunteerResetKey, setVolunteerResetKey] = useState(0);
+
   const [assignments, setAssignments] = useState<
     { opportunityId: number; volunteerId: number; volunteerName: string }[]
   >([]);
+  
 
   // Score initialised to 0
   const [score, setScore] = useState(0);
@@ -61,6 +64,9 @@ function App() {
     setCountries(prev =>
       prev.map(c => ({ ...c, status: "idle" }))
     );
+
+    // Trigger volunteer reset
+    setVolunteerResetKey(prev => prev + 1);
   };
 
 
@@ -86,6 +92,37 @@ function App() {
 
     setIsSelectingVolunteer(false);
     setSelectedVolunteerId(null);
+
+    // Determine time based on difficulty
+    const durationSeconds = activeOpportunity.difficulty === 1
+      ? 7
+      : activeOpportunity.difficulty === 2
+        ? 12
+        : 15;
+
+
+    // After the opportunity duration, revert country & volunteer
+    setTimeout(() => {
+      // Make country idle again
+      setCountries(prev =>
+        prev.map(c =>
+          c.iso === activeOpportunity.countryIso
+            ? { ...c, status: "idle" }
+            : c
+        )
+      );
+
+      // Remove volunteer from assignments and add back to dashboard with +1 experience
+      setVolunteerResetKey(prev => prev + 1); // trigger dashboard reset
+      setAssignments(prev =>
+        prev.filter(a => a.volunteerId !== volunteerId)
+      );
+      
+      // Update volunteer experience (done inside VolunteerDashboard)
+      // VolunteerDashboard uses resetKey to regenerate list, we can pass a callback
+    }, durationSeconds * 1000);
+      
+
   };
 
 
@@ -238,6 +275,7 @@ function App() {
           selectedVolunteerId={selectedVolunteerId}
           onSelectVolunteer={(id) => setSelectedVolunteerId(id)}
           onAssignVolunteer={handleAssignVolunteer}
+          resetKey={volunteerResetKey}
         />
       </div>
 
