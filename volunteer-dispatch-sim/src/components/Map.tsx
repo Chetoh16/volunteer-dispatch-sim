@@ -38,12 +38,12 @@ const Map: React.FC<MapProps> = ({ countries, setCountries, onCountryClick }) =>
               const name = geo.properties.name;
               
 
-              let fillColor = "#ccc";
+              let fillColor = "#f6f8e3";
               if(country?.status === "alert") fillColor = "red";
               if(country?.status === "active") fillColor = "green";
 
               return (
-                <Geography
+                <Geography  
                   key={geo.rsmKey}
                   geography={geo}
                   fill={fillColor}
