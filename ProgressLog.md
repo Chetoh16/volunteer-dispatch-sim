@@ -1,4 +1,4 @@
-### The Process
+## The Process
 - First we brainstormed ideas to find something that's related to UN Sustainable Development Goals and AIESEC. We thought about projects
 that focused on educating people about SDG and projects that focused on helping people figure out what kind of volunteering opportunity
 is right for them to motivate people to volunteer. At the end, we landed on the decision of making a game that combines two of these ideas.
