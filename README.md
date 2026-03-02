@@ -1,4 +1,7 @@
 # Go Volunteer (Volunteer-Dispatch-Simulator)
+<img width="1000" height="1000" alt="go-volunteer-logo" src="https://github.com/user-attachments/assets/f22260f9-1a69-41eb-872f-8a1f642d394b" />
+
+
 In this game, you step into the role of an Exchange Manager:
 - Assigning volunteers to opportunities
 - Managing time and volunteers.
